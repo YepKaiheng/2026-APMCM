@@ -1,0 +1,3 @@
+id,formula,A,B,X,V_hat,source,public_V,problem,pool,ising_energy,bin_min,tile_ties,runner_up,enum_gap
+13153,LaTiO2N,La,Ti,NO2,6.92438215767335,04,,Q2,07,-702,2,1,7.25666411061472,0.0
+8760,SnTiO3,Sn,Ti,O3,3.26811293746613,02,0.001419,Q3,08,-724,1,1,3.90488064163491,0.0

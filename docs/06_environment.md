@@ -2,7 +2,7 @@
 
 本机 Python 3.12.14 已核验 CSV 读取、CatBoost 拟合、Matplotlib 绘制、pymatgen 元素查询、Kaiwu QUBO 构造，pip check 通过。TeX Live 2026 和 PDF 工具可用。
 
-Kaiwu 发行包版本 1.4.4，包内 kaiwu.__version__ 曾显示社区版本 1.0.8，版本核对采用 importlib.metadata.version("kaiwu")。实际 SimulatedAnnealingOptimizer 调用停在首次授权，仍需官方用户 ID 和 SDK 授权码，实际求解待完成。
+Kaiwu 发行包版本 1.4.4，包内 kaiwu.__version__ 显示社区版本 1.0.8，版本核对采用 importlib.metadata.version("kaiwu")。SimulatedAnnealingOptimizer 需要首次授权。本次用同一版本内置的 BruteForceOptimizer 在本机完成两问全部 338 个小块。模型、评分、成本及复现步骤见[论文目录](../problem_d/paper/README.md)。SPQC 真机尚无实测记录。
 
 ## 新机器
 

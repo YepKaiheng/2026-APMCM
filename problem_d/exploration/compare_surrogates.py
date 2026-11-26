@@ -27,21 +27,33 @@ def composition_features(frame):
     return features
 
 
+def model_options(seed):
+    return dict(iterations=350, depth=5, learning_rate=0.08, random_seed=seed,
+                   thread_count=4, verbose=False, allow_writing_files=False, cat_features=SITES)
+
+def fit_mixture(train, features, seed):
+    options = model_options(seed)
+    has_gap = train.gap > 0
+    classifier = CatBoostClassifier(**options).fit(features, has_gap.astype(int))
+    gapped_model = CatBoostRegressor(**options).fit(features[has_gap], train.V[has_gap])
+    metal_model = CatBoostRegressor(**options).fit(features[~has_gap], train.V[~has_gap])
+    return classifier, gapped_model, metal_model
+
+
+def predict_mixture(models, new_features):
+    classifier, gapped_model, metal_model = models
+    p_gap = classifier.predict_proba(new_features)[:, 1]
+    gapped = np.maximum(0, gapped_model.predict(new_features))
+    metal = np.maximum(METAL_BOUND, metal_model.predict(new_features))
+    return p_gap * gapped + (1 - p_gap) * metal
+
+
 def fit_predict(train, validation, seed):
     features = composition_features(train)
     new_features = composition_features(validation)
-    options = dict(iterations=350, depth=5, learning_rate=0.08, random_seed=seed,
-                   thread_count=4, verbose=False, allow_writing_files=False, cat_features=SITES)
-
-    direct = CatBoostRegressor(**options).fit(features, train.V).predict(new_features)
-    has_gap = train.gap > 0
-    classifier = CatBoostClassifier(**options).fit(features, has_gap.astype(int))
-    p_gap = classifier.predict_proba(new_features)[:, 1]
-    gapped_model = CatBoostRegressor(**options).fit(features[has_gap], train.V[has_gap])
-    metal_model = CatBoostRegressor(**options).fit(features[~has_gap], train.V[~has_gap])
-    gapped = np.maximum(0, gapped_model.predict(new_features))
-    metal = np.maximum(METAL_BOUND, metal_model.predict(new_features))
-    return {"direct": direct, "mixture": p_gap * gapped + (1 - p_gap) * metal}
+    direct = CatBoostRegressor(**model_options(seed)).fit(features, train.V).predict(new_features)
+    mixture = predict_mixture(fit_mixture(train, features, seed), new_features)
+    return {"direct": direct, "mixture": mixture}
 
 
 def main(seed, predictions_path=None):

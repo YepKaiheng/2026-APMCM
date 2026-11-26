@@ -1,0 +1,80 @@
+\section{What can be learned when every exact target is hidden?}
+Castelli et al.\ screened cubic perovskites for light-driven water splitting \cite{castelli}. A composition with a suitable gap can still fail on band alignment or stability. Problem D combines these failures into one score and asks for a single composition in each of two search spaces \cite{contest}. Its validation design poses a difficulty beyond regression error. We can check predictions at thousands of public compositions, yet none is a zero of the objective.
+
+For ordered sites $A$ and $B$ and anion family $X$, denote formation energy, GLLB-SC gap, valence edge and conduction edge by $e,g,v,c$, respectively, in eV. GLLB-SC is a computational approach to estimating band gaps \cite{kuisma}. We retain the edge convention in the supplied data. With $[t]_+=\max(0,t)$, the dimensionless contest loss is
+\begin{align}
+ d&=(e-0.21,\;1.4-g,\;g-3.1,\;5.73-v,\;c-4.50),\notag\\
+ V(A,B,X)&=\sum_{j=1}^5 [d_j/0.5]_+^2. \label{eq:loss}
+\end{align}
+Equation~\eqref{eq:loss} includes equality in its zero set. The organizers report 19 compositions with $V=0$ and 15 under the strict physical inequalities. We use the former convention. Recomputing $V$ from the four rounded public quantities gives a maximum absolute discrepancy of $1.02\times10^{-5}$. We fit the supplied six-decimal target after this check.
+
+\begin{table}[h]
+\caption{Official partitions. Each pair contributes seven families to its partition. The hidden exact-target count comes from the organizers.}\label{tab:data}
+\centering\begin{tabular}{lrrrr}
+\toprule Partition & Pairs & Rows & $V=0$ & $V<1$ observed\\\midrule
+Training (02) & 1,608 & 11,256 & 0 & 83\\
+Selection (03) & 567 & 3,969 & 0 & 27\\
+Holdout (04) & 529 & 3,703 & 19 & unavailable\\\bottomrule
+\end{tabular}
+\end{table}
+
+The grid contains $52^2\times7$ compositions, including $A=B$. The pair sets in Table~\ref{tab:data} are disjoint. The seven families are O3, NO2, FO2, N2O, N3, O2S and FNO. File 06 repeats public compositions without labels. We use 02 for Q1 training, 03 for model selection and 04 for predictions. Q2 and Q3 use a separate fit on 02 and 03. Sorting by identifier breaks exact score ties. Identifiers, measured geometry and DFT outcomes are excluded from inference.
+
+\clearpage
+\section{Problem 1. A lower bound for the metallic branch}
+Of 15,225 public rows, 14,652 have $g=0$. On every one, $v=c$. Set both edges to $t$. The gap alone contributes $(1.4/0.5)^2=7.84$. Between 4.50 and 5.73, the two edge penalties form a convex quadratic symmetric about $t=5.115$. Outside that interval their sum increases. Formation energy can only add a nonnegative penalty. Hence under the observed coincident-edge convention
+\begin{equation}
+ V_{\rm metal}\ \geq\ L=7.84+
+ \frac{(5.73-4.50)^2}{2(0.5)^2}=10.8658. \label{eq:metal}
+\end{equation}
+The smallest metallic values are 10.865834 in training and 10.866614 in validation. A zero-gap record thus teaches the model where a near-target is physically unlikely. At prediction time the gap is unknown.
+
+\subhead{A surrogate with observable training labels}
+Composition-based descriptors have proved useful in inorganic property prediction \cite{ward}. For each metal site separately we use atomic number, Pauling electronegativity, periodic-table row and group from pymatgen \cite{ong}. Three categorical fields $A,B,X$ bring the total to eleven. This preserves site order and assumes the supplied cubic prototype throughout.
+
+CatBoost handles the categorical inputs \cite{catboost}. Let $p(z)$ estimate $\Pr(g>0\mid z)$ from composition features $z$. Two regressors estimate $V$ conditional on positive and zero gap. The law of total expectation motivates
+\begin{equation}
+ \Vh(z)=p(z)\max(0,f_+(z)) + (1-p(z))\max(L,f_0(z)).
+ \label{eq:mix}
+\end{equation}
+File 02 supplies 432 positive-gap and 10,824 metallic outcomes for fitting the gate. This classification label is observed even though the exact screening target never occurs in 02. Soft weighting keeps every candidate eligible. A composition receiving a high $p$ may still fail the band-edge or formation-energy requirements.
+
+We compare with one direct regressor for $V$ using identical descriptors, 350 boosting iterations per component, depth 5, learning rate 0.08, four CPU threads and seeds 26 and 42. The mixture fits three components and has more total capacity. We carry seed 26 forward to use one fixed score table for both optimization problems. File 03 was reused for exploratory model selection. Its metrics describe development performance. For Q1 the supplementary table records a prediction for each of the 3,703 hidden IDs using the fit on 02 alone.
+
+\clearpage
+\section{Validation at the actual screening budget}
+For an ordered shortlist $S_k$ define $H_k=\sum_{i\in S_k}\mathbf1[V_i<1]$. Recall divides $H_k$ by the number of such targets in the relevant pool. For a one-choice decision $i^*$, labeled-pool regret is $R_1=V_{i^*}-\min_i V_i$. The expected number of $V<1$ hits in 50 random draws without replacement from the entire validation pool is $50(27/3969)=0.34$.
+
+\begin{table}[h]
+\caption{Validation on 567 unseen pairs. Errors and hits use all 3,969 rows. The last two columns give observed $V$ at rank one within each restricted pool.}\label{tab:val}
+\centering\small\begin{tabular}{lrrrrrrr}
+\toprule Fit & Seed & MAE & RMSE & $H_{20}$ & $H_{50}$ & Q2 first & Q3 first\\\midrule
+Direct &26&3.016&5.000&2&6&8.562&11.492\\
+Mixture &26&2.949&4.828&8&13&10.927&11.492\\
+Direct &42&3.013&4.945&3&10&11.540&46.240\\
+Mixture &42&3.025&4.902&9&15&11.084&12.670\\\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering\includegraphics[width=\linewidth]{figures/screening.pdf}
+\caption{Hits as compositions are checked down the ranked list. Green is the mixture, blue direct regression, and orange the random expectation. Solid and dashed model curves use seeds 26 and 42. Vertical scales reflect the target counts in each pool.}\label{fig:screen}
+\end{figure}
+
+The mixture recovers 48.1\% and 55.6\% of the 27 near-targets at $k=50$. For Q2 it retrieves all four validation near-targets in 50 draws under both seeds, yet chooses a composition with $V>10$ first. For Q3 the seed-26 mixture spends its first ten checks without finding $V<1$ (Figure~\ref{fig:screen}). Its first-choice regret is $11.49225-0.04=11.45225$. We select the mixture for its shortlist performance across both seeds and examine the cost of that choice at rank one below.
+
+\clearpage
+\section{Unseen pairs, withheld near-targets and a failed alternative}
+We repeat the comparison inside file 02 with five shuffled folds of complete $(A,B)$ pairs. Each model uses four folds for fitting and ranks the fifth. Spending 50 checks in each held-out pool gives 250 checks per row of Table~\ref{tab:fold}. The five regrets describe variability across held-out compositions. The folds overlap in training data.
+\begin{table}[h]
+\caption{Five grouped folds within 02. The denominator counts all observed $V<1$ targets across the five held-out pools.}\label{tab:fold}
+\centering\small\begin{tabular}{llrrr}
+\toprule Pool & Method & Hits / targets & Median $R_1$ & Range of $R_1$\\\midrule
+\FoldRows
+\bottomrule\end{tabular}
+\end{table}
+In Q3 the mixture finds more near-targets over the five shortlists, yet its median first-choice regret is larger. A second stress test removes every pair containing $V<0.25$ from the training portion of file 02 and adds background pairs to form a 322-pair holdout. All 29 such targets lie among 2,254 held-out records. Across two background selections, direct regression retrieves five of 29 in its top 50 and the mixture retrieves nine. On the three-family subset the counts are five and seven of 20. Mixture rank-one $V$ moves from 13.8461 to 0.4756 while the attainable minimum is 0.0004 in both. These runs share the same targets. Their prevalence is 1.29\%, compared with 0.10\% for exact zeros on the contest grid.
+
+\subhead{When predicting each physical quantity helps}
+Two public methodological notes motivated checks of property-first prediction and precision loss \cite{note1,note2}. Four separate 220-tree regressions predict $e,g,v,c$, followed by Eq.~\eqref{eq:loss}. At seeds 26 and 42, the property model selects a Q2 composition with observed $V=0.36$, versus 10.93 and 11.54 for a 220-tree direct fit. In Q3 both property fits choose $\mathrm{CaZrO_3}$ with $V=46.24$. At seed 26 its predicted gap is 2.19 eV, inside the window. The observed gap is 6.50 eV; the upper-gap term alone is $((6.50-3.10)/0.50)^2=46.24$. Average property accuracy conceals this error at the selected extreme. We retain one mixture across both pools and report this Q2 advantage as a sensitivity result.
+

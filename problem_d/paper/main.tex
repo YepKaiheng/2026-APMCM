@@ -1,0 +1,44 @@
+% Compile with XeLaTeX and the supplied APMCM class on TEXINPUTS.
+\documentclass{apmcmthesis}
+\usepackage{url}
+\usepackage[hidelinks,pdfauthor={},pdftitle={Screening Perovskites When All Exact Targets Are Hidden}]{hyperref}
+\tihao{D}
+\baominghao{}
+\input{numbers.tex}
+\renewcommand{\baselinestretch}{1.10}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{.45em}
+\setlength{\headheight}{15pt}
+\setcounter{tocdepth}{1}
+\setlength{\emergencystretch}{1.2em}
+\captionsetup{font=small,labelfont=bf,justification=raggedright,singlelinecheck=false}
+\newcommand{\Vh}{\widehat V}
+\newcommand{\noo}{\mathrm{NO}_2}
+\newcommand{\ooo}{\mathrm O_3}
+\newcommand{\foo}{\mathrm{FO}_2}
+\newcommand{\subhead}[1]{\par\smallskip{\large\bfseries #1}\par\nopagebreak}
+\begin{document}
+\pagestyle{mainmatterstyle}
+\begin{abstract}
+\begin{center}
+{\Large\bfseries Screening Perovskites When All Exact Targets Are Hidden}\\[3pt]
+{\large A band-gap surrogate and an audited 8-bit QUBO search}
+\end{center}
+All 19 zero-violation compositions in the 18,928-candidate grid belong to the hidden set. The public records nevertheless contain a measurable signal for screening. Every labeled zero-gap material has coincident band edges. Under the contest loss this implies a violation of at least 10.8658. We use a composition-based classifier to estimate the probability of a positive gap and fit separate violation regressions for the two regimes.
+
+On 3,969 validation compositions from unseen element pairs, the resulting model retrieves 13 of the 27 materials with $V<1$ in its first 50 choices, compared with six for direct regression. A second training seed gives 15 versus ten. The improvement has a limit at a budget of one. On the three-family validation pool, the first choice has observed $V=11.4923$ at the primary seed, although the attainable minimum is 0.0400.
+
+After refitting on all public labels, the full-pool surrogate selects $\mathrm{LaTiO_2N}$ for fixed $\noo$ ($\Vh=6.924382$) and $\mathrm{SnTiO_3}$ for the three-family problem ($\Vh=3.268113$). The first material has a hidden label. The second has public training $V=0.001419$. Restricting the three-family search to unseen pairs selects $\mathrm{LaTiO_2N}$ again.
+
+Direct 8-bit conversion changes the best legal pair in all six whole-grid settings tested on the three-family score table. We partition the table into $4\times4$ blocks, encode bounded integer costs, solve each block with the Kaiwu SDK on a CPU, and resolve ties using the original predictions. All 338 block solves pass exhaustive feasibility and energy checks. Both final selections match exact enumeration. At this scale a direct array scan is cheaper. The larger uncertainty is the physical loss at a previously unseen composition.
+\keywords{perovskite screening, grouped validation, band-gap mixture, QUBO, coefficient precision}
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\input{prediction.tex}
+\input{optimization.tex}
+\input{references.tex}
+\input{appendix.tex}
+\end{document}
+

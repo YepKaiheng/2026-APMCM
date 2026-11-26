@@ -1,4 +1,4 @@
-# Python 3.12; Kaiwu solver use requires an official SDK license.
+# Python 3.12. The paper uses the Kaiwu local exact CPU solver.
 kaiwu==1.4.4
 numpy==2.5.5
 pandas==2.2.3

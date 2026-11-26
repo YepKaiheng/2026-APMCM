@@ -21,6 +21,6 @@
     "pdftotext": true,
     "pdftoppm": true
   },
-  "kaiwu_status": "QUBO construction passed; optimizer call requires official user ID and SDK license.",
+  "kaiwu_status": "Local BruteForceOptimizer solved 338 nine-spin instances. SimulatedAnnealingOptimizer requested first-use authorization. No SPQC run.",
   "experiment_date_china": "2026-11-26"
 }

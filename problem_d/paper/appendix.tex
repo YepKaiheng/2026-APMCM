@@ -1,0 +1,26 @@
+\clearpage
+\section*{Appendix. Reproduction and complete source listings}
+\phantomsection
+\addcontentsline{toc}{section}{Appendix. Reproduction and complete source listings}
+Python 3.12.14, CatBoost 1.2.10, pymatgen 2025.10.7, NumPy 2.5.5, pandas 2.2.3, SciPy 1.18.1, scikit-learn 1.9.1 and Kaiwu SDK 1.4.4 were used on Windows 11. All quantities in the figures are obtained from saved prediction or solver tables. Matplotlib 3.10.3 produced the vector figures and XeLaTeX typeset the manuscript with the supplied APMCM class.
+
+Place the original files in \texttt{problem\_d/date}. Run the data audit, the validation and stress comparisons for seeds 26 and 42, the physical-property comparison, the seed-26 encoding and precision audit, then the paper scripts. Running \texttt{screen.py scores} produces the hidden Q1 predictions and the refit Q2/Q3 score table. Running \texttt{screen.py development} produces the five-fold results. Use \texttt{solve.py} for both full-pool searches, then \texttt{figures.py} and \texttt{tables.py} for the manuscript. The companion README gives the arguments and file names for each call.
+
+The score ledger records SHA-256 digests for the two exported tables. The block ledger contains the selected ID, tie count, integer-energy minimum, scaled Ising energy, observed coupling range and timing for each call. Both final-pool selections can be reconstructed from the tables alone.
+
+\lstset{language=Python,basicstyle=\fontsize{8.5}{10}\selectfont\ttfamily,
+  columns=fullflexible,keepspaces=true,breaklines=true,breakatwhitespace=false,
+  frame=none,backgroundcolor=\color{white},rulecolor=\color{white},
+  keywordstyle=\color{black},stringstyle=\color{black},commentstyle=\color{black!65},
+  aboveskip=2pt,belowskip=4pt,showstringspaces=false}
+\newcommand{\program}[2]{\clearpage\subhead{#1}\lstinputlisting{#2}}
+\program{A1. Surrogate features and model components}{../exploration/compare_surrogates.py}
+\program{A2. Source checks and label reconstruction}{../exploration/audit_data.py}
+\program{A3. Withheld near-target and encoding experiments}{../exploration/test_innovation_ideas.py}
+\program{A4. Physical-property-first prediction}{../exploration/compare_physical_properties.py}
+\program{A5. Whole-grid SDK precision audit}{../exploration/audit_sdk_precision.py}
+\program{A6. Frozen predictions and grouped folds}{screen.py}
+\program{A7. Integer QUBO construction, exact solution and checks}{solve.py}
+\program{A8. Manuscript figures}{figures.py}
+\program{A9. Measured values for the manuscript tables}{tables.py}
+
