@@ -1,6 +1,6 @@
 # 2026 APMCM · Problem D
 
-本仓库整理这次讨论形成的选题判断、D 题研究方案、已运行实验、环境依赖、两人协作和英文论文规范。选题已确定为 **D — Application of Special Purpose Quantum Computer to Rare-Target Search in Perovskite Candidate Materials**。
+本仓库整理这次的选题判断、D 题研究方案、已运行实验、环境依赖、两人协作和英文论文规范。选题已确定为 **D — Application of Special Purpose Quantum Computer to Rare-Target Search in Perovskite Candidate Materials**。
 
 论文、摘要、图表和附录说明使用英文。中文文档用于队内研究和交接。
 
