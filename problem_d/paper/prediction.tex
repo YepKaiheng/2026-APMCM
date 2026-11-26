@@ -20,6 +20,7 @@ Holdout (04) & 529 & 3,703 & 19 & unavailable\\\bottomrule
 
 The grid contains $52^2\times7$ compositions, including $A=B$. The pair sets in Table~\ref{tab:data} are disjoint. The seven families are O3, NO2, FO2, N2O, N3, O2S and FNO. File 06 repeats public compositions without labels. We use 02 for Q1 training, 03 for model selection and 04 for predictions. Q2 and Q3 use a separate fit on 02 and 03. Sorting by identifier breaks exact score ties. Identifiers, measured geometry and DFT outcomes are excluded from inference.
 
+\input{crystal.tex}
 \clearpage
 \section{Problem 1. A lower bound for the metallic branch}
 Of 15,225 public rows, 14,652 have $g=0$. On every one, $v=c$. Set both edges to $t$. The gap alone contributes $(1.4/0.5)^2=7.84$. Between 4.50 and 5.73, the two edge penalties form a convex quadratic symmetric about $t=5.115$. Outside that interval their sum increases. Formation energy can only add a nonnegative penalty. Hence under the observed coincident-edge convention
@@ -41,6 +42,7 @@ File 02 supplies 432 positive-gap and 10,824 metallic outcomes for fitting the g
 
 We compare with one direct regressor for $V$ using identical descriptors, 350 boosting iterations per component, depth 5, learning rate 0.08, four CPU threads and seeds 26 and 42. The mixture fits three components and has more total capacity. We carry seed 26 forward to use one fixed score table for both optimization problems. File 03 was reused for exploratory model selection. Its metrics describe development performance. For Q1 the supplementary table records a prediction for each of the 3,703 hidden IDs using the fit on 02 alone.
 
+\input{regimes.tex}
 \clearpage
 \section{Validation at the actual screening budget}
 For an ordered shortlist $S_k$ define $H_k=\sum_{i\in S_k}\mathbf1[V_i<1]$. Recall divides $H_k$ by the number of such targets in the relevant pool. For a one-choice decision $i^*$, labeled-pool regret is $R_1=V_{i^*}-\min_i V_i$. The expected number of $V<1$ hits in 50 random draws without replacement from the entire validation pool is $50(27/3969)=0.34$.
@@ -63,6 +65,7 @@ Mixture &42&3.025&4.902&9&15&11.084&12.670\\\bottomrule
 
 The mixture recovers 48.1\% and 55.6\% of the 27 near-targets at $k=50$. For Q2 it retrieves all four validation near-targets in 50 draws under both seeds, yet chooses a composition with $V>10$ first. For Q3 the seed-26 mixture spends its first ten checks without finding $V<1$ (Figure~\ref{fig:screen}). Its first-choice regret is $11.49225-0.04=11.45225$. We select the mixture for its shortlist performance across both seeds and examine the cost of that choice at rank one below.
 
+\input{sensitivity.tex}
 \clearpage
 \section{Unseen pairs, withheld near-targets and a failed alternative}
 We repeat the comparison inside file 02 with five shuffled folds of complete $(A,B)$ pairs. Each model uses four folds for fitting and ranks the fifth. Spending 50 checks in each held-out pool gives 250 checks per row of Table~\ref{tab:fold}. The five regrets describe variability across held-out compositions. The folds overlap in training data.
