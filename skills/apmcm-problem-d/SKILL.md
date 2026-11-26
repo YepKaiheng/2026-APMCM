@@ -19,6 +19,8 @@ Resolve paths from the repository root containing this skill and `problem_d/date
 
 Read `docs/02_modeling_plan.md` for the current mathematical plan, `docs/03_innovations_and_evidence.md` for measured results and limitations, and `docs/04_team_workflow.md` for the next work. Reproduce experiments using `docs/06_environment.md`. Treat the documented methods as candidates until validation and resource checks support a final choice.
 
+Read `docs/08_external_notes_review.md` when revising models or hardware claims. Physical-property prediction followed by the hinge penalties differs from predicting the penalties themselves. Fixed-X full-table QUBO encoding is exact for any surrogate, so distillation is an optional compression step whose selection error must be measured. The official precision target is 8-bit signed coefficients. Include the extra reference spin in the actual Ising dimension and report whether the original minimum survives the SDK precision transform. Public two-stage recipes and generic partial minimization need accurate attribution and contribution claims. The near-target stress split uses a different prevalence and threshold from the hidden zero-V task.
+
 Re-read relevant source pages before treating a numerical threshold, submission detail, or wording requirement as authoritative. Follow the user's current instructions and the APMCM materials above. The CUMCM skill's national-contest templates, Chinese typography, AI disclosure rules, fixed figure/formula/reference counts, and result spreadsheets are not APMCM requirements. Use the reusable parts of that workflow only when they help this problem.
 
 ## Start and coordination

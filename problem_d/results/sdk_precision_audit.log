@@ -1,0 +1,14 @@
+Kaiwu distribution 1.4.4
+{'model': 'direct', 'cap_quantile': 1.0, 'penalty': 1.1, 'original_variables': 104, 'ising_variables': 105, 'ties': 3, 'retains_original_min': True, 'best_original_gap': 0.0, 'worst_original_gap': 0.260205455558463}
+{'model': 'direct', 'cap_quantile': 1.0, 'penalty': 3.0, 'original_variables': 104, 'ising_variables': 105, 'ties': 48, 'retains_original_min': True, 'best_original_gap': 0.0, 'worst_original_gap': 3.2247105023043314}
+{'model': 'direct', 'cap_quantile': 1.0, 'penalty': 10.0, 'original_variables': 104, 'ising_variables': 105, 'ties': 12, 'retains_original_min': True, 'best_original_gap': 0.0, 'worst_original_gap': 1.8708008530479816}
+{'model': 'direct', 'cap_quantile': 0.1, 'penalty': 1.1, 'original_variables': 104, 'ising_variables': 105, 'ties': 253, 'retains_original_min': False, 'best_original_gap': 1.9769841590114385, 'worst_original_gap': 25.077460981350622}
+{'model': 'direct', 'cap_quantile': 0.1, 'penalty': 3.0, 'original_variables': 104, 'ising_variables': 105, 'ties': 1, 'retains_original_min': False, 'best_original_gap': 0.11911691160963755, 'worst_original_gap': 0.11911691160963755}
+{'model': 'direct', 'cap_quantile': 0.1, 'penalty': 10.0, 'original_variables': 104, 'ising_variables': 105, 'ties': 9, 'retains_original_min': True, 'best_original_gap': 0.0, 'worst_original_gap': 1.2290825148367794}
+{'model': 'mixture', 'cap_quantile': 1.0, 'penalty': 1.1, 'original_variables': 104, 'ising_variables': 105, 'ties': 1, 'retains_original_min': False, 'best_original_gap': 18.594872425276797, 'worst_original_gap': 18.594872425276797}
+{'model': 'mixture', 'cap_quantile': 1.0, 'penalty': 3.0, 'original_variables': 104, 'ising_variables': 105, 'ties': 12, 'retains_original_min': False, 'best_original_gap': 1.3175285682082585, 'worst_original_gap': 7.232897886138335}
+{'model': 'mixture', 'cap_quantile': 1.0, 'penalty': 10.0, 'original_variables': 104, 'ising_variables': 105, 'ties': 1, 'retains_original_min': False, 'best_original_gap': 5.929700830947529, 'worst_original_gap': 5.929700830947529}
+{'model': 'mixture', 'cap_quantile': 0.1, 'penalty': 1.1, 'original_variables': 104, 'ising_variables': 105, 'ties': 3, 'retains_original_min': False, 'best_original_gap': 5.660966870427001, 'worst_original_gap': 6.508608405100797}
+{'model': 'mixture', 'cap_quantile': 0.1, 'penalty': 3.0, 'original_variables': 104, 'ising_variables': 105, 'ties': 2, 'retains_original_min': False, 'best_original_gap': 1.3175285682082585, 'worst_original_gap': 3.6562692202072133}
+{'model': 'mixture', 'cap_quantile': 0.1, 'penalty': 10.0, 'original_variables': 104, 'ising_variables': 105, 'ties': 4, 'retains_original_min': False, 'best_original_gap': 1.3175285682082585, 'worst_original_gap': 7.108292494011885}
+Legal-state comparisons only. Feasibility of the unconstrained ground state and actual solver performance remain unmeasured.

@@ -28,6 +28,7 @@
 | [文献检索任务](docs/05_literature_search.md) | 检索方向、已核对 DOI、给其他 AI 的任务 |
 | [环境与复现](docs/06_environment.md) | 安装运行、依赖版本和授权状态 |
 | [英文论文与提交要求](docs/07_paper_requirements.md) | 页序、匿名、命名、截止和交付 |
+| [外部笔记评审与修正](docs/08_external_notes_review.md) | 可读来源、我们方案的不足、物理预测与官方 8 位新实验 |
 | [实验记录](problem_d/results/README.md) | 逐行预测、日志、指标及环境版本 |
 
 ## 目录

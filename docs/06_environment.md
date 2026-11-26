@@ -27,6 +27,10 @@ py -3.12 -m venv .venv
 & .venv/Scripts/python.exe problem_d/exploration/test_innovation_ideas.py stress --seed 42 --predictions problem_d/results/stress_seed42.csv
 & .venv/Scripts/python.exe problem_d/exploration/test_innovation_ideas.py encoding --seed 26 --predictions problem_d/results/encoding_seed26.csv
 & .venv/Scripts/python.exe problem_d/exploration/summarize_results.py
+& .venv/Scripts/python.exe problem_d/exploration/compare_physical_properties.py --seed 26 --predictions problem_d/results/physical_seed26.csv
+& .venv/Scripts/python.exe problem_d/exploration/compare_physical_properties.py --seed 42 --predictions problem_d/results/physical_seed42.csv
+& .venv/Scripts/python.exe problem_d/exploration/audit_external_ideas.py
+& .venv/Scripts/python.exe problem_d/exploration/audit_sdk_precision.py
 ```
 
 代码固定参数和种子，使用 CPU CatBoost，并保存逐行预测。硬件线程和依赖变化可能引起浮点排序差异，所以记录实际环境。预算指标可独立从预测表复算。

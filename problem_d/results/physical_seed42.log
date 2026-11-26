@@ -1,0 +1,16 @@
+e_form MAE 0.19248845157053288
+gap MAE 0.1058159506535381
+vbm MAE 0.08867701738824121
+cbm MAE 0.08757883356569612
+direct MAE 3.1220796955759593 RMSE 5.043853786575493 Spearman 0.9100350263050561
+all first V 11.151799 hits@20/50 [3, 11] true-top50 overlap@50 12
+q2 first V 11.540465 hits@20/50 [2, 3] true-top50 overlap@50 35
+q3 first V 11.151799 hits@20/50 [1, 3] true-top50 overlap@50 7
+physical4 MAE 3.22528446702085 RMSE 5.116534442564017 Spearman 0.915417275537109
+all first V 46.24 hits@20/50 [4, 13] true-top50 overlap@50 14
+q2 first V 0.36 hits@20/50 [3, 3] true-top50 overlap@50 35
+q3 first V 46.24 hits@20/50 [1, 4] true-top50 overlap@50 6
+physical3_derived_cbm MAE 3.2332950573822865 RMSE 5.232337706599206 Spearman 0.9132358444815972
+all first V 11.811145 hits@20/50 [3, 10] true-top50 overlap@50 11
+q2 first V 0.36 hits@20/50 [3, 3] true-top50 overlap@50 39
+q3 first V 11.811145 hits@20/50 [2, 5] true-top50 overlap@50 8
