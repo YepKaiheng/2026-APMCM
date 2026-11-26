@@ -1,0 +1,18 @@
+direct
+X elimination: 104 bits, min 9.292322070098937 first-to-second pair margin 0.11911691160963755
+cap quantile 1.0 bits 8 tied pairs 3 contains original minimum True worst original-score gap 0.260205455558463
+cap quantile 1.0 bits 12 tied pairs 1 contains original minimum False worst original-score gap 2.2302750706897143
+cap quantile 1.0 bits 16 tied pairs 1 contains original minimum True worst original-score gap 0.0
+cap quantile 0.1 bits 8 tied pairs 253 contains original minimum False worst original-score gap 25.077460981350622
+cap quantile 0.1 bits 12 tied pairs 2 contains original minimum False worst original-score gap 1.0722429424619957
+cap quantile 0.1 bits 16 tied pairs 1 contains original minimum True worst original-score gap 0.0
+min score 9.292322070098937 two-factor choice true score 9.292322070098937 original gap at two-factor choice 0.0 lower-bound contenders 8 AX blocks 8 bits including AX auxiliaries 115 optimal sets equal True
+mixture
+X elimination: 104 bits, min 3.2681129374661326 first-to-second pair margin 0.6367677041687818
+cap quantile 1.0 bits 8 tied pairs 1 contains original minimum False worst original-score gap 18.594872425276794
+cap quantile 1.0 bits 12 tied pairs 1 contains original minimum False worst original-score gap 7.313810774449462
+cap quantile 1.0 bits 16 tied pairs 1 contains original minimum False worst original-score gap 0.6367677041687818
+cap quantile 0.1 bits 8 tied pairs 3 contains original minimum False worst original-score gap 6.508608405100797
+cap quantile 0.1 bits 12 tied pairs 1 contains original minimum True worst original-score gap 0.0
+cap quantile 0.1 bits 16 tied pairs 1 contains original minimum True worst original-score gap 0.0
+min score 3.2681129374661326 two-factor choice true score 3.2681129374661326 original gap at two-factor choice 0.0 lower-bound contenders 1 AX blocks 1 bits including AX auxiliaries 108 optimal sets equal True

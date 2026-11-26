@@ -1,0 +1,49 @@
+{
+  "checksums": {
+    "02_castelli_train.csv": true,
+    "03_castelli_val.csv": true,
+    "04_castelli_test_holdout.csv": true,
+    "06_castelli_no_physics.csv": true,
+    "07_castelli_q2_pool.csv": true,
+    "08_castelli_q3_pool.csv": true,
+    "11_castelli_q2_pool_blind.csv": true,
+    "12_castelli_q3_pool_blind.csv": true,
+    "README_数据集说明.md": true
+  },
+  "rows": {
+    "02": 11256,
+    "03": 3969,
+    "04": 3703,
+    "06": 15225,
+    "07": 2704,
+    "08": 8112,
+    "11": 529,
+    "12": 1587
+  },
+  "pair_counts": {
+    "02": 1608,
+    "03": 567,
+    "04": 529
+  },
+  "zero_gap_penalty_lower_bound": 10.8658,
+  "labeled": {
+    "02": {
+      "zero_V": 0,
+      "zero_gap": 10824,
+      "nonzero_gap": 432,
+      "max_V_recalculation_error": 1.018944400499322e-05,
+      "minimum_metal_V": 10.865834,
+      "count_V_lt_1": 83,
+      "count_V_lt_025": 29
+    },
+    "03": {
+      "zero_V": 0,
+      "zero_gap": 3828,
+      "nonzero_gap": 141,
+      "max_V_recalculation_error": 1.0189444012098647e-05,
+      "minimum_metal_V": 10.866614,
+      "count_V_lt_1": 27,
+      "count_V_lt_025": 10
+    }
+  }
+}

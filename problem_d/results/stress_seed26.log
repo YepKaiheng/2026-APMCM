@@ -1,0 +1,7 @@
+public-training-only stress low pairs 29 blind pairs 322 rows 9002 2254
+direct all 2254 targets 29 first V 12.787297 best attainable 0.0004 hits@20,@50 [2, 5]
+direct Q2 322 targets 3 first V 12.148851 best attainable 0.0324 hits@20,@50 [2, 3]
+direct Q3 966 targets 20 first V 12.410198 best attainable 0.0004 hits@20,@50 [1, 5]
+mixture all 2254 targets 29 first V 13.846073 best attainable 0.0004 hits@20,@50 [4, 9]
+mixture Q2 322 targets 3 first V 12.148851 best attainable 0.0324 hits@20,@50 [3, 3]
+mixture Q3 966 targets 20 first V 13.846073 best attainable 0.0004 hits@20,@50 [3, 7]

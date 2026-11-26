@@ -1,0 +1,37 @@
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+catboost_info/
+
+# Local credentials and licenses
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*license*.dat
+*license*.lic
+*license*.json
+*license*.jwt
+
+# Editor and LaTeX intermediates
+.vscode/
+.idea/
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
+# Reproducible experiment transcripts are intentional results
+!problem_d/results/**/*.log
+
+# Unrelated large input archives
+*.tar
+*.7z
