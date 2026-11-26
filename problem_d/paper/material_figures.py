@@ -1,10 +1,7 @@
 """Draw crystallographic, validation and QUBO diagnostics for Problem D."""
-from itertools import combinations, product
 
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
-from matplotlib.lines import Line2D
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import numpy as np
 import pandas as pd
 
@@ -16,50 +13,12 @@ FAMILIES = ["O3", "NO2", "FO2"]
 FAMILY_LABELS = [r"$\mathrm{O_3}$", r"$\mathrm{NO_2}$", r"$\mathrm{FO_2}$"]
 
 
-def crystal(public):
-    fig = plt.figure(figsize=(7.6, 3.8), layout="constrained")
-    ax = fig.add_subplot(121, projection="3d", proj_type="ortho")
-    corners = np.array(list(product([0, 1], repeat=3)))
-    center = np.full(3, 0.5)
-    offsets = 0.5 * np.eye(3)
-    faces = np.vstack([center + offsets, center - offsets])
-    for a, b in combinations(corners, 2):
-        if np.abs(a-b).sum() == 1:
-            ax.plot(*np.vstack([a,b]).T, color="#8d99a3", lw=1.2)
-    triangles = [center + offsets * np.array(signs)[:, None]
-                 for signs in product([-1, 1], repeat=3)]
-    ax.add_collection3d(Poly3DCollection(triangles, facecolor="#8cd1c8",
-                                         edgecolor="#578886", alpha=.13, linewidth=.6))
-    for point in faces:
-        ax.plot(*np.vstack([center, point]).T, color="#4a6868", lw=1)
-    markers = [(corners, NAVY, 85, "A  corner"), ([center], ORANGE, 145, "B  center"),
-               (faces, TEAL, 60, "X  face")]
-    for points, color, size, _ in markers:
-        ax.scatter(*np.array(points).T, s=size, color=color, edgecolor="white",
-                   linewidth=.7, depthshade=False)
-    ax.set_box_aspect((1,1,1), zoom=1.04)
-    ax.view_init(elev=19, azim=-61)
-    ax.set_axis_off()
-    ax.set_title("Ideal cubic cell", loc="left", fontweight="bold")
-    fig.legend(handles=[Line2D([], [], ls="", marker="o", color=c, label=s)
-                        for _, c, _, s in markers], loc="lower left",
-               bbox_to_anchor=(.025,.01), ncol=3, frameon=False, columnspacing=.65,
-               handletextpad=.2, fontsize=9)
-    bx = fig.add_subplot(122)
+def site_pair_audit(public):
     swapped = public[["A","B","X","V"]].rename(columns={"A":"B","B":"A","V":"reversed"})
     pairs = public.merge(swapped, on=["A","B","X"], validate="one_to_one").query("A < B")
-    diffs = np.sort(np.abs(pairs.V - pairs.reversed))
-    bx.step(diffs, np.arange(1, len(diffs)+1)/len(diffs), where="post", color=NAVY, lw=2)
-    median = np.median(diffs)
-    bx.plot([0,median,median],[.5,.5,0], "--", color=ORANGE, lw=1)
-    bx.scatter(median,.5,color=ORANGE,s=29,zorder=3)
-    bx.annotate(f"Median {median:.2f}",(median,.5), xytext=(15,.41), textcoords="data")
-    bx.set(title="Observed effect of exchanging A and B", xlabel="Absolute change in V",
-           ylabel="Fraction of matched pairs",xlim=(0,np.ceil(diffs.max())),ylim=(0,1.01))
-    bx.grid(axis="y",alpha=.2)
-    fig.savefig(FIG/"crystal_sites.pdf")
-    fig.savefig(FIG/"crystal_sites.png",dpi=180)
-    plt.close(fig)
+    diff = np.abs(pairs.V - pairs.reversed)
+    print("Site-exchange pairs", len(pairs), "quartiles", diff.quantile([.25,.5,.75]).to_list(),
+          "site-invariant MAE floor", diff.mean()/2)
 
 
 def physical(public):
@@ -184,7 +143,7 @@ def tied_block(scores):
 if __name__=="__main__":
     public=pd.concat([pd.read_csv(next(DATA.glob(prefix+"_*.csv"))) for prefix in ["02","03"]])
     scores=pd.read_csv(ART/"q23_full.csv")
-    crystal(public)
+    site_pair_audit(public)
     physical(public)
     stability()
     landscapes(scores)

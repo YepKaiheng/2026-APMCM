@@ -4,10 +4,10 @@ In the ideal cubic perovskite setting, place A at the corners, B at the body cen
 
 \begin{figure}[ht]
 \centering\includegraphics[width=\linewidth]{figures/crystal_sites.pdf}
-\caption{Left, an ideal cubic cell in fractional coordinates with the six vertices of the B-centered octahedron. All face markers denote generic anion sites. Right, the empirical cumulative distribution of the absolute score change on exchanging A and B, with $X$ held fixed. Each public matched pair contributes once.}\label{fig:cell}
+\caption{Left, one repeat unit of the ideal cubic prototype. Right, the coordination shells centered separately on A and B, reconstructed by periodic repetition. Red spheres denote anion sites. The shell views use independent scales and atom radii are schematic.}\label{fig:cell}
 \end{figure}
 
-The geometry explains what an order-invariant composition descriptor would discard. We matched each public record $(a,b,x)$ with $(b,a,x)$ when both were labeled, excluded $a=b$, and counted each reciprocal pair once. Among 5,971 matches, the median absolute difference is 5.5296, with quartiles 2.2672 and 12.6046 (Figure~\ref{fig:cell}). A predictor that gives both records the same output $h$ incurs
+The coordination environments in Figure~\ref{fig:cell} explain what an order-invariant composition descriptor would discard. We matched each public record $(a,b,x)$ with $(b,a,x)$ when both were labeled, excluded $a=b$, and counted each reciprocal pair once. Among 5,971 matches, the median absolute difference is 5.5296, with quartiles 2.2672 and 12.6046. A predictor that gives both records the same output $h$ incurs
 \[
  \tfrac12\{|V(a,b,x)-h|+|V(b,a,x)-h|\}\ \geq\
  \tfrac12 |V(a,b,x)-V(b,a,x)|.
@@ -16,3 +16,4 @@ Averaging the right-hand side gives an unavoidable MAE of at least 4.6805 on the
 
 The full-pool Q3 winner illustrates the scale of the effect. Public $\mathrm{SnTiO_3}$ has $g=2.50$ eV and $V=0.001419$; its reversed assignment $\mathrm{TiSnO_3}$ has $g=0$ and $V=18.422244$. For $\mathrm{SnTiO_3}$ the supplied cubic lattice parameter is 3.969143~\AA. The figure uses fractional coordinates. Lattice parameters and volumes are available only in labeled records and do not enter the score of a new composition.
 
+\input{exchange.tex}
