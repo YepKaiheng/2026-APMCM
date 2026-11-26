@@ -11,5 +11,5 @@ The largest score in this block is 49.089358. The spacing of one integer bin is 
 
 This example explains the difference between feasibility and selection accuracy. The penalty $P=16$ certifies one A and one B for every ground state in this block. It cannot distinguish the four green cells in Figure~\ref{fig:tile}. The monotonicity argument only places the best real-valued candidate somewhere among them. Full ground-state retrieval plus the original-score comparison is the additional condition needed for equality with the floating-point block minimum.
 
-The distinction matters beyond this example. Multiple optimum pairs occur in 70 of 169 Q3 blocks and 71 of 169 Q2 blocks. The cost table on the following page includes time spent decoding and resolving those ties. These are within-block alternatives. Global selection still compares all 169 retained representatives using their original surrogate scores.
+The distinction matters beyond this example. Multiple optimum pairs occur in 70 of 169 Q3 blocks and 71 of 169 Q2 blocks. The cost table in the next section includes time spent decoding and resolving those ties. These are within-block alternatives. Global selection still compares all 169 retained representatives using their original surrogate scores.
 

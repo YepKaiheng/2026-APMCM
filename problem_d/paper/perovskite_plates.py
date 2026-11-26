@@ -136,29 +136,35 @@ def site_exchange(public):
 
 
 def electronic(public):
-    fig,ax=board(3.96)
-    sn=public.query("id==8760").iloc[0]
-    ca=public.query("id==8811").iloc[0]
-    pred=pd.read_csv(ROOT.parent/"results"/"physical_seed26.csv").query("id==8811").iloc[0]
-    cols=[(2.0,"SnTiO\u2083","Public DFT",sn.cbm,sn.vbm,sn.gap),
-          (4.42,"CaZrO\u2083","Property model",pred.pred_cbm,pred.pred_vbm,pred.pred_gap),
-          (6.68,"CaZrO\u2083","Public DFT",ca.cbm,ca.vbm,ca.gap)]
-    def y(e): return 3.05-(e-1.5)*.337
-    for threshold,color,name in [(4.50,GREEN,"CBM limit"),(5.73,VIOLET,"VBM limit")]:
-        h=y(threshold)
-        ax.plot([1.25,7.82],[h,h],ls=(0,(3,3)),lw=.9,color=color,zorder=.5)
-        label(ax,.1,h+.09,name,8,color)
-        label(ax,.1,h-.08,f"{threshold:.2f} eV",8,color)
-    for x,s,src,cb,vb,gap in cols:
-        label(ax,x,3.75,s,13,weight="bold",align="center")
-        label(ax,x,3.47,src,9,SOFT,align="center")
-        for e,c,sign in [(cb,GREEN,1),(vb,VIOLET,-1)]:
-            h=y(e)
-            ax.plot([x-.53,x+.53],[h,h],lw=3,color=c,solid_capstyle="butt",zorder=2)
-            label(ax,x,h+sign*.118,f"{e:.3f}",8.7,c,align="center")
-        ax.annotate("",xy=(x,y(cb)-.014),xytext=(x,y(vb)+.014),
-                    arrowprops=dict(arrowstyle="<->",lw=.85,color=SOFT,mutation_scale=6))
-        label(ax,x,.30,f"Gap field   {gap:.2f} eV",10,align="center")
+    fig, ax = plt.subplots(figsize=(8.0, 4.15))
+    fig.subplots_adjust(left=.115, right=.78, top=.92, bottom=.31)
+    sn = public.query("id==8760").iloc[0]
+    ca = public.query("id==8811").iloc[0]
+    pred = pd.read_csv(ROOT.parent/"results"/"physical_seed26.csv").query("id==8811").iloc[0]
+    columns = [(r"$\mathrm{SnTiO_3}$","Public DFT",sn.cbm,sn.vbm,sn.gap),
+               (r"$\mathrm{CaZrO_3}$","Property model",pred.pred_cbm,pred.pred_vbm,pred.pred_gap),
+               (r"$\mathrm{CaZrO_3}$","Public DFT",ca.cbm,ca.vbm,ca.gap)]
+    ax.set(xlim=(-.48,2.48), ylim=(9,1), yticks=range(1,10),
+           ylabel="Reported band-edge value (eV)")
+    ax.set_xticks(range(3), [title+"\n"+source for title,source,*_ in columns])
+    ax.set_xlabel("Composition and data source",labelpad=28)
+    ax.spines[["top","right"]].set_visible(False)
+    ax.spines[["left","bottom"]].set_color(SOFT)
+    ax.tick_params(axis="both", colors=INK, labelsize=9)
+    ax.grid(axis="y",lw=.45,color="#e0e7e9")
+    for threshold,color,name in [(4.50,GREEN,"CBM cutoff"),(5.73,VIOLET,"VBM cutoff")]:
+        ax.axhline(threshold,color=color,lw=1,ls=(0,(4,3)))
+        ax.text(1.02,threshold,f"{name}\n{threshold:.2f} eV",color=color,
+                transform=ax.get_yaxis_transform(),va="center",fontsize=9)
+    for x,(_,_,cb,vb,gap) in enumerate(columns):
+        for e,c,offset in [(cb,GREEN,-.19),(vb,VIOLET,.24)]:
+            ax.hlines(e,x-.28,x+.28,color=c,lw=3.2)
+            ax.text(x,e+offset,f"{e:.3f}",color=c,ha="center",
+                    va="bottom" if offset<0 else "top",fontsize=9)
+        ax.annotate("",xy=(x,cb),xytext=(x,vb),
+                    arrowprops=dict(arrowstyle="<->",lw=.9,color=SOFT,mutation_scale=7))
+        ax.text(x,-.24,f"Gap  {gap:.2f} eV",transform=ax.get_xaxis_transform(),
+                ha="center",fontsize=9,fontweight="bold")
     save(fig,"band_edges")
 
 

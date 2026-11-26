@@ -14,7 +14,9 @@
 | [artifacts/group_folds.csv](artifacts/group_folds.csv) | Five-fold grouped development results |
 | [artifacts/costs.csv](artifacts/costs.csv) | Timings, calls, integer ranges and tie counts |
 
-The nine manuscript figures include four perovskite-specific illustrations, available as vector PDFs and high-resolution PNGs. [Cubic cell and coordination shells](figures/crystal_sites.pdf) and [oxide site-exchange sections](figures/site_exchange.pdf) use ideal coordinates. [Band-edge levels](figures/band_edges.pdf) compare public oxide records and the seed-26 property model. [Anion substitutions](figures/anion_substitution.pdf) use composition fractions and the frozen La–Ti scores. The full-grid family heatmaps remain a supplementary figure. The paired resampling and seed overlap results are in [shortlist_sensitivity.csv](artifacts/shortlist_sensitivity.csv).
+The twelve manuscript figures include four perovskite-specific illustrations, available as vector PDFs and high-resolution PNGs. [Cubic cell and coordination shells](figures/crystal_sites.pdf) and [oxide site-exchange sections](figures/site_exchange.pdf) use ideal coordinates. [Band-edge levels](figures/band_edges.pdf) compare public oxide records and the seed-26 property model. The supplementary anion composition diagram uses composition fractions and the frozen La–Ti scores. The full-grid family heatmaps remain a supplementary figure. The paired resampling and seed overlap results are in [shortlist_sensitivity.csv](artifacts/shortlist_sensitivity.csv).
+
+The gate audit refits the seed-26 mixture on file 02 and checks all 3,969 scores against their archived values. The outputs in artifacts include gate_components.csv, gate_ablation.csv, edge_consistency.csv and score_margins.csv. Four orthographic scenes show a corner-sharing InTiO3 motif, an incident photon over ideal CaZrO3, the expanded layers of the decoded SnTiO3 cell, and [a three-stage O-to-N composition edit](figures/anion_exchange_scene.pdf). They are ideal geometric and energetic illustrations.
 
 ## Reproduce the numbers
 
@@ -37,6 +39,9 @@ python problem_d/paper/solve.py
 python problem_d/paper/figures.py
 python problem_d/paper/material_figures.py
 python problem_d/paper/perovskite_plates.py
+python problem_d/paper/gate_audit.py
+python problem_d/paper/mechanisms.py
+python problem_d/paper/crystal_scenes.py
 python problem_d/paper/tables.py
 ```
 
