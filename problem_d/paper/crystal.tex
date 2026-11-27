@@ -1,11 +1,11 @@
 \subsection{Why A and B must remain ordered}
-In the ideal cubic perovskite setting, place A at the corners, B at the body center and the anions at the face centers \cite{aflow}. The eight corners contribute $8/8=1$ A atom per cell. The six faces contribute $6/2=3$ anions. B has six nearest anion neighbors in the illustrated octahedron, while the periodically repeated face centers give A twelve nearest anion neighbors. The contest family label specifies the composition of the three anions. For example, NO2 supplies one N and two O per formula unit. The files give no site-resolved O/N ordering for the blind candidate.
+The contest supplies an ideal cubic prototype. To isolate the effect of site assignment in the illustration, we hold its fractional coordinates fixed and place A at the corners, B at the body center and the anions at the face centers \cite{aflow}. The eight corners contribute $8/8=1$ A atom per cell. The six faces contribute $6/2=3$ anions. B has six nearest anion neighbors in the illustrated octahedron, while the periodically repeated face centers give A twelve nearest anion neighbors. The contest family label specifies the composition of the three anions. For example, NO2 supplies one N and two O per formula unit. For the blind candidate this fixes stoichiometry only; the data leave the O/N site ordering unresolved.
 
-Figure~\ref{fig:cell} holds the ideal fractional coordinates fixed while exchanging the cations. Each panel's gap and violation come from its own public DFT record.
+Figure~\ref{fig:cell} compares two DFT records at reversed site assignments. The exchange arrow connects two separately calculated compositions.
 
 \begin{figure}[htbp]
 \centering\includegraphics[width=.98\linewidth]{figures/crystal_sites.pdf}
-\caption{Ordered sites in the ideal cubic prototype and two independently computed oxide records. In the unit cell Sn occupies the A corners and Ti the B center. The projected sections at right show the cations and equatorial oxygen sites. Squares mark Sn, diamonds Ti and circles O in both panels. Geometry follows the cubic prototype \cite{aflow}.}\label{fig:cell}
+\caption{Exchanging the corner and central cations in the ideal cubic prototype \cite{aflow}. Gap and violation are the public DFT values for each composition.}\label{fig:cell}
 \end{figure}
 
 We matched each public record $(a,b,x)$ with $(b,a,x)$ when both were labeled, excluded $a=b$, and counted each reciprocal pair once. Among 5,971 matches, the median absolute difference is 5.5296, with quartiles 2.2672 and 12.6046. A predictor that gives both records the same output $h$ incurs

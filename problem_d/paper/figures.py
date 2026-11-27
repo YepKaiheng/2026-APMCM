@@ -5,6 +5,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from matplotlib.patches import FancyBboxPatch
 import numpy as np
 import pandas as pd
 
@@ -31,6 +32,43 @@ plt.rcParams.update({
 def save(fig, name):
     fig.savefig(FIG / (name + ".pdf"), metadata={"CreationDate": None})
     plt.close(fig)
+
+
+def workflow():
+    fig, ax = plt.subplots(figsize=(6.7, 3.55))
+    fig.subplots_adjust(left=.012, right=.988, top=.985, bottom=.015)
+    ax.set(xlim=(0, 10), ylim=(0, 5.2))
+    ax.axis("off")
+
+    def box(x, y, width, heading, detail, color):
+        ax.add_patch(FancyBboxPatch((x, y), width, .84, boxstyle="round,pad=.025",
+                                   facecolor="#F7F8F6", edgecolor=color, lw=1))
+        ax.text(x+.12, y+.55, heading, fontsize=9.6, weight="bold", color=color)
+        ax.text(x+.12, y+.19, detail, fontsize=8.8)
+
+    def arrow(start, end):
+        ax.annotate("", end, start, arrowprops=dict(arrowstyle="-|>", color=GRAY,
+                    lw=1.15, shrinkA=2, shrinkB=2))
+
+    ax.text(.04, 4.93, "Q1   Learn to rank unseen compositions", weight="bold", color=BLUE)
+    box(.05, 3.70, 2.56, "02   Train", "Composition + labels", BLUE)
+    box(3.05, 3.70, 3.05, "03   Select model", "Hits and rank-one regret", BLUE)
+    box(6.55, 3.70, 3.35, "04   Predict hidden scores", "3,703 IDs · fit from 02 only", BLUE)
+    arrow((2.63, 4.12), (3.03, 4.12))
+    arrow((6.12, 4.12), (6.53, 4.12))
+    arrow((4.58, 3.69), (4.58, 2.83))
+    ax.text(4.78, 3.2, "Carry forward the selected model design", va="center", fontsize=8.8)
+    ax.text(.04, 3.08, "Q2 / Q3   Select one composition", weight="bold", color=SAGE)
+    box(.05, 1.95, 6.05, "02 + 03   Refit on all public labels",
+        "Freeze one score per eligible composition", SAGE)
+    ax.plot([3.08, 3.08], [1.94, 1.6], color=GRAY, lw=1.15)
+    ax.plot([2.38, 7.48], [1.6, 1.6], color=GRAY, lw=1.15)
+    for x in (2.38, 7.48):
+        arrow((x, 1.62), (x, 1.21))
+    box(.05, .34, 4.65, "Full pools 07 / 08", "Kaiwu block QUBOs → verify by scan", SAGE)
+    box(5.12, .34, 4.77, "Blind subsets 11 / 12", "Scan eligible scores → blind nominee", SAGE)
+    ax.text(.06, .04, "Q2 fixes NO\u2082. Q3 compares O\u2083, NO\u2082 and FO\u2082.", fontsize=8.8)
+    save(fig, "workflow")
 
 
 def budget():
@@ -112,6 +150,7 @@ def precision():
 
 
 if __name__ == "__main__":
+    workflow()
     budget()
     single_or_shortlist()
     precision()

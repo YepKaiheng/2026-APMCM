@@ -2,10 +2,8 @@
 from itertools import combinations, product
 
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from matplotlib.markers import MarkerStyle
-from matplotlib.patches import Circle, PathPatch, Polygon, Rectangle
-from matplotlib.transforms import Affine2D
+from matplotlib.colors import to_rgb
+from matplotlib.patches import Circle, Polygon
 import numpy as np
 import pandas as pd
 
@@ -16,15 +14,16 @@ DATA = HERE.parent / "date"
 ELEMENT = {"Sn": BLUE, "Ti": OCHRE, "O": CLAY, "N": PLUM, "F": SAGE}
 
 
-SITE_MARKER = {"Sn": "s", "Ti": "D", "O": "o"}
-
-
-def draw_site(ax, x, y, radius, element, depth=3):
-    marker = MarkerStyle(SITE_MARKER[element])
-    path = marker.get_path().transformed(marker.get_transform())
-    position = Affine2D().scale(2 * radius).translate(x, y) + ax.transData
-    ax.add_patch(PathPatch(path, transform=position, facecolor=ELEMENT[element],
-                           edgecolor=INK, linewidth=.55, zorder=depth))
+def draw_site(ax, x, y, radius, element, depth):
+    # Nested vector disks shade the same spherical glyph from the upper left.
+    color = np.array(to_rgb(ELEMENT[element]))
+    ax.add_patch(Circle((x, y), radius, fc=color*.65, ec=INK, lw=.55, zorder=depth))
+    for i in range(1, 15):
+        t = i / 15
+        shade = color * (.65 + .35*t) + (1-color) * .72*t*t
+        shift = .36 * radius * t
+        ax.add_patch(Circle((x-shift, y+shift), radius*(1-t), fc=shade,
+                            ec="none", zorder=depth+.001*t))
 
 
 def project(points):
@@ -37,7 +36,7 @@ def project(points):
     return np.asarray(points) @ np.array(basis).T
 
 
-def cell(ax):
+def cell(ax, a_site, b_site):
     corners = np.array(list(product([-.5,.5], repeat=3)))
     faces = np.vstack([np.eye(3), -np.eye(3)])*.5
     center = np.zeros(3)
@@ -52,41 +51,33 @@ def cell(ax):
     for p in faces:
         pts = project([center,p])
         ax.plot(*pts[:,:2].T, color=GRAY, lw=.85, zorder=5+pts[:,2].mean())
-    for sites, el, radius in ((corners,"Sn",.078),(faces,"O",.060),([center],"Ti",.096)):
+    for sites, el, radius in ((corners,a_site,.080),(faces,"O",.058),([center],b_site,.105)):
         for x, y, depth in project(sites):
-            draw_site(ax, x, y, radius, el, 5.1 + depth)
+            draw_site(ax, x, y, radius, el, 7 + depth)
     ax.set(xlim=(-.93,.93),ylim=(-.89,.89),aspect="equal")
     ax.axis("off")
 
 
 def crystal_and_exchange(public):
-    fig = plt.figure(figsize=(6.45,2.85), layout="constrained")
-    grid = fig.add_gridspec(2,2, height_ratios=[5,1], width_ratios=[.85,1.48])
-    ax, bx, legend = fig.add_subplot(grid[0,0]), fig.add_subplot(grid[0,1]), fig.add_subplot(grid[1,:])
-    ax.set_title("a   Ideal SnTiO\u2083 cell")
-    cell(ax)
-    bx.set(title="b   Exchange the two cations", xlim=(0,2), ylim=(-.48,1.4), aspect="equal")
-    bx.axis("off")
-    for x, formula in enumerate(("SnTiO3","TiSnO3")):
-        r = public.loc[public.formula.eq(formula) & public.X.eq("O3")].squeeze()
-        assert isinstance(r, pd.Series)
-        cx, cy, half = x+.5, .63, .25
-        bx.text(cx,1.24,formula.replace("3","\u2083"),ha="center",weight="bold")
-        bx.text(cx,1.04,f"A={r.A}   B={r.B}",ha="center",fontsize=9)
-        bx.add_patch(Rectangle((cx-half,cy-half),2*half,2*half,fc=GRID,ec=GRAY,lw=.8))
-        # Project onto (001). The central B site lies in the plane at z = 1/2.
-        for dx,dy in product([-half,half],repeat=2):
-            draw_site(bx, cx + dx, cy + dy, .069, r.A)
-        for dx,dy in ((0,half),(0,-half),(half,0),(-half,0)):
-            draw_site(bx, cx + dx, cy + dy, .047, "O")
-        draw_site(bx, cx, cy, .09, r.B)
-        bx.text(cx,.11,f"Gap  {r.gap:.2f} eV",ha="center",fontsize=9)
-        bx.text(cx,-.11,f"V  {r.V:.6f}",ha="center",fontsize=9)
-    legend.axis("off")
-    handles = [Line2D([],[],marker=SITE_MARKER[e],lw=0,markerfacecolor=ELEMENT[e],markeredgecolor=INK,
-                      markeredgewidth=.6,label=e) for e in ("Sn","Ti","O")]
-    legend.legend(handles=handles,loc="center",ncol=3,handletextpad=.15,columnspacing=1.6)
-    save(fig,"crystal_sites")
+    fig = plt.figure(figsize=(6.45, 2.85))
+    for left, formula in ((.025, "SnTiO3"), (.57, "TiSnO3")):
+        row = public.loc[public.formula.eq(formula) & public.X.eq("O3")].squeeze()
+        assert isinstance(row, pd.Series)
+        ax = fig.add_axes([left, .21, .405, .62])
+        cell(ax, row.A, row.B)
+        cx = left + .2025
+        fig.text(cx, .925, formula.replace("3", "\u2083"), ha="center", weight="bold", fontsize=14)
+        fig.text(cx, .85, f"Corners: {row.A}    Center: {row.B}", ha="center", fontsize=10)
+        fig.text(cx, .115, f"Gap  {row.gap:.2f} eV", ha="center", fontsize=11)
+        fig.text(cx, .035, f"Violation  {row.V:.6f}", ha="center", fontsize=11)
+    mid = fig.add_axes([.40, .32, .20, .36])
+    mid.set(xlim=(0, 1), ylim=(0, 1))
+    mid.axis("off")
+    mid.text(.5, .72, "Exchange A / B", ha="center", fontsize=10)
+    mid.annotate("", (.88, .51), (.12, .51),
+                 arrowprops=dict(arrowstyle="<->", color=GRAY, lw=1.4))
+    mid.text(.5, .27, "O at face centers", ha="center", fontsize=9)
+    save(fig, "crystal_sites")
 
 
 def electronic(public):
