@@ -13,9 +13,10 @@
 | [artifacts/block_runs.csv](artifacts/block_runs.csv) | All 338 nine-spin calls, block indices (alphabetical element order), ground-state tie counts, original scores and timings |
 | [artifacts/group_folds.csv](artifacts/group_folds.csv) | Five-fold grouped development results |
 | [artifacts/capacity_control.csv](artifacts/capacity_control.csv) | Matched-descriptor direct fits with 350, 700 and 1,050 trees versus the frozen mixture, two seeds and three pools |
+| [artifacts/q2_blind_comparison.csv](artifacts/q2_blind_comparison.csv) | All 529 blind Q2 IDs, four predicted properties, both seed-26 scores and ranks after fitting on 02+03 |
 | [artifacts/costs.csv](artifacts/costs.csv) | Timings, calls, integer ranges and tie counts |
 
-The paper contains nine figures in the main text and two in the appendix. Each is a native vector PDF made from the underlying data or ideal cubic coordinates. The [Q3 budget comparison](figures/q3_budget.pdf) shows both 50-candidate hit counts and rank-one regret on the same 1,701 validation rows. The [integer tie example](figures/tied_block.pdf) links four minimum-cost cells to their original scores. Model colors, markers and element colors are shared across figures. The [three-family score maps](figures/family_landscapes.pdf) are a further figure in the supporting archive.
+The paper contains nine figures in the main text and two in the appendix. Each is a native vector PDF made from the underlying data or ideal cubic coordinates. The [Q3 budget comparison](figures/q3_budget.pdf) shows both 50-candidate hit counts and rank-one regret on the same 1,701 validation rows for seeds 26 and 42, including the 1,050-tree direct baseline. The [integer tie example](figures/tied_block.pdf) links four minimum-cost cells to their original scores. Model colors, markers and element colors are shared across figures. The [three-family score maps](figures/family_landscapes.pdf) are a further figure in the supporting archive.
 
 The gate replay checks the 3,969 archived seed-26 predictions. The separate capacity control replays the direct and mixture baselines for seeds 26 and 42, then refits larger direct models on file 02. Its 700-tree budget matches nominal training-row passes and its 1,050-tree budget matches the mixture's component tree count. Fitting times are measured separately for each run. Pair-bootstrap and seed-overlap results appear in [shortlist_sensitivity.csv](artifacts/shortlist_sensitivity.csv).
 
@@ -39,12 +40,22 @@ python problem_d/paper/screen.py development
 python problem_d/paper/solve.py
 python problem_d/paper/gate_audit.py
 python problem_d/paper/capacity_audit.py
+python problem_d/paper/q2_blind_comparison.py
 python problem_d/paper/mechanisms.py
+python problem_d/paper/tables.py
+```
+
+The numerical lock includes Matplotlib 3.10.3. All final vector figures use Matplotlib 3.10.8. With the locked numerical environment active, run the following in a separate PowerShell session from the repository root. The temporary package directory selects the rendering version for this session while reusing the locked numerical packages.
+
+```powershell
+$renderLib = Join-Path $env:TEMP 'apmcm-render-mpl3108'
+python -m pip install --no-deps --target $renderLib matplotlib==3.10.8
+$env:PYTHONPATH = $renderLib
+python -c "import matplotlib; assert matplotlib.__version__ == '3.10.8'"
 python problem_d/paper/figures.py
 python problem_d/paper/material_figures.py
 python problem_d/paper/perovskite_plates.py
 python problem_d/paper/crystal_scenes.py
-python problem_d/paper/tables.py
 ```
 
 The Q1 predictions use seed 26 and the 02-only model. The Q2/Q3 refit uses the same seed and features. The SDK's public exact CPU solver works on these small blocks without interactive activation in the tested installation. The separate simulated-annealing backend prompted for official authorization. The paper's cost comparison uses the CPU backend.

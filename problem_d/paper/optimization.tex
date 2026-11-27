@@ -65,6 +65,21 @@ Q3 & 12 (1,587)&13153& La, Ti, NO2 & LaTiO$_2$N & 6.924382 & hidden\\\bottomrule
 \end{table}
 All four winners use the same refitted model. The ordered triplets explain why the file's NO2 family is written as O$_2$N in the supplied formula. For Q2 and Q3, respectively, runner-up scores are 7.256664 and 3.904881. Enumeration gaps for the chosen records are zero. Their winning-block Ising energies under $-s^\mathsf{T}Js$ are $-702$ and $-724$. Constants and scales vary by block, so comparing those two energies would have no physical meaning. $\mathrm{SnTiO_3}$ belongs to file 02; its public value is an in-training observation after refitting. For a new DFT calculation in the blind pool, both objectives nominate $\mathrm{LaTiO_2N}$. The appendix compares its three anion choices (Figure~\ref{fig:families}).
 
+\subhead{Does the blind Q2 choice survive a change of predictor?}
+We refit the four 220-tree property regressors on the same 15,225 labeled records (02 and 03), at seed 26. For each of the 529 file-11 compositions we apply Eq.~\eqref{eq:loss} to its predicted properties. We rank both this score and the frozen mixture score in ascending order, breaking ties by official ID. Table~\ref{tab:crossrank} follows each model's winner into the other ranking.
+
+\begin{table}[htbp]
+\caption{The two first choices on the blind Q2 pool. Each pair of columns gives a prediction and the rank it earns among the same 529 candidates. Physical violations are unknown.}\label{tab:crossrank}
+\centering\small\begin{tabular}{lrrrrr}
+\toprule & & \multicolumn{2}{c}{Mixture} & \multicolumn{2}{c}{Property-first}\\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+Composition & ID & $\Vh$ & Rank & $\Vh$ & Rank\\\midrule
+$\mathrm{LaTiO_2N}$ & 13153 & 6.924382 & 1 & 2.122043 & 6\\
+$\mathrm{SrTaO_2N}$ & 2269 & 9.159399 & 4 & 0.969357 & 1\\\bottomrule
+\end{tabular}
+\end{table}
+Both compositions appear in both top sixes, but the preferred first calculation changes. The property-first fit predicts a gap of 1.168 eV for $\mathrm{SrTaO_2N}$ and 0.866 eV for $\mathrm{LaTiO_2N}$, both below the 1.40 eV threshold. Thus even its winning score of 0.969357 represents a predicted violation. The competition answer uses the frozen mixture; these blind ranks provide a sensitivity check on the material choice.
+
 \input{decode.tex}
 
 Table~\ref{tab:cost} separates shared fitting and scoring costs from the pool-specific solver and scan times.
@@ -104,4 +119,4 @@ The metallic bound transfers only to data with the same band-edge convention. Ac
 
 The eight-bit construction preserves the score minimum when each block returns all ground states and their raw costs break ties. All candidates must first be scored, and a direct scan already finds the same minimum in microseconds. Any SPQC speed comparison still requires device success rates and end-to-end timings on matched inputs \cite{speed}.
 
-The full-pool answers are $\mathrm{LaTiO_2N}$ for Q2 and $\mathrm{SnTiO_3}$ for Q3. For the next DFT calculation, both blind pools nominate $\mathrm{LaTiO_2N}$ (ID 13153, $\Vh=6.924382$). Its physical violation remains unknown.
+The full-pool answers are $\mathrm{LaTiO_2N}$ for Q2 and $\mathrm{SnTiO_3}$ for Q3. The frozen mixture nominates $\mathrm{LaTiO_2N}$ (ID 13153, $\Vh=6.924382$) in both blind pools. A Q2 decision based on the four predicted properties would send $\mathrm{SrTaO_2N}$ (ID 2269) to DFT first. Independent physical calculations are needed to resolve this choice.

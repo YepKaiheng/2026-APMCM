@@ -24,19 +24,29 @@ def violation(properties):
     return np.square(np.maximum(0, deviations / 0.5)).sum(axis=1)
 
 
-def run(seed, output):
-    train = pd.read_csv(DATA / "02_castelli_train.csv")
-    validation = pd.read_csv(DATA / "03_castelli_val.csv")
-    features, new_features = composition_features(train), composition_features(validation)
-    settings = dict(iterations=220, depth=5, learning_rate=0.08, random_seed=seed,
+def settings_for(seed):
+    return dict(iterations=220, depth=5, learning_rate=0.08, random_seed=seed,
                     thread_count=4, verbose=False, allow_writing_files=False,
                     cat_features=SITES)
+
+
+def predict_properties(train, features, new_features, settings):
     properties = {}
     for field in PROPERTIES:
         regressor = CatBoostRegressor(**settings).fit(features, train[field])
         properties[field] = regressor.predict(new_features)
         if field == "gap":
             properties[field] = np.maximum(0, properties[field])
+    return properties
+
+
+def run(seed, output):
+    train = pd.read_csv(DATA / "02_castelli_train.csv")
+    validation = pd.read_csv(DATA / "03_castelli_val.csv")
+    features, new_features = composition_features(train), composition_features(validation)
+    settings = settings_for(seed)
+    properties = predict_properties(train, features, new_features, settings)
+    for field in PROPERTIES:
         print(field, "MAE", mean_absolute_error(validation[field], properties[field]), flush=True)
 
     physical = violation(properties)

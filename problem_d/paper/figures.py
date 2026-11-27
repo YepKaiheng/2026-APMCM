@@ -63,28 +63,30 @@ def budget():
 
 
 def single_or_shortlist():
-    records = pd.read_csv(RESULTS / "validation_seed26.csv")
-    pool = records[records.X.isin(FAMILIES)]
-    target_count = int(pool.V.lt(1).sum())
-    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.05), layout="constrained")
-    for ax, title, xlabel, limit, ticks in zip(
-        axes, ("a   First 50 candidates", "b   First candidate"),
-        (f"Near-targets found (of {target_count})", "Regret in observed violation"),
-        (6.0, 15.7), ([0, 1, 2, 3, 4, 5], [0, 4, 8, 12])):
-        ax.set(title=title, xlabel=xlabel, xlim=(0, limit), xticks=ticks,
-               yticks=[1, 0], yticklabels=["Mixture", "Direct"], ylim=(-.55, 1.55))
+    capacity = pd.read_csv(HERE / "artifacts" / "capacity_control.csv")
+    q3 = capacity[capacity.pool.eq("Q3")].set_index(["seed", "model", "trees"])
+    models = [("mixture", 1050, "Mixture (3 × 350)"),
+              ("direct", 1050, "Direct (1,050)"), ("direct", 350, "Direct (350)")]
+    fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.65), sharey=True, layout="constrained")
+    for ax, metric, title, label, limit in zip(
+        axes, ("hits50", "regret"), ("a   Check 50 candidates", "b   Check one candidate"),
+        ("Near-targets found (out of 11)", "Excess violation at rank one"), (7.6, 57)):
+        for y, (model, trees, _) in enumerate(models):
+            for seed, offset, color, marker in ((26, -.16, BLUE, "o"), (42, .16, CLAY, "s")):
+                value = q3.loc[(seed, model, trees), metric]
+                ax.plot(value, y + offset, marker, color=color, ms=5)
+                label_value = f"{value:.0f}" if metric == "hits50" else f"{value:.2f}"
+                ax.annotate(label_value, (value, y + offset), (5, 0),
+                            textcoords="offset points", va="center", fontsize=8)
+        ax.set(title=title, xlabel=label, xlim=(0, limit), ylim=(2.5, -.5),
+               yticks=range(3), yticklabels=[name for _, _, name in models])
         ax.grid(axis="x")
         ax.spines["left"].set_visible(False)
         ax.tick_params(axis="y", length=0)
-    for y, (key, name, color, marker) in zip([1, 0], MODELS):
-        ranked = pool.sort_values([key, "id"])
-        hits = ranked.head(50).V.lt(1).sum()
-        regret = ranked.iloc[0].V - pool.V.min()
-        for ax, value, label in zip(axes, (hits, regret), (str(hits), f"{regret:.5f}")):
-            ax.hlines(y, 0, value, color=color, lw=1.6)
-            ax.plot(value, y, marker=marker, ms=7, color=color, clip_on=False)
-            ax.annotate(label, (value, y), (5, 0), textcoords="offset points",
-                        va="center", fontsize=9, color=INK)
+    axes[0].set_xticks(range(0, 7, 2))
+    handles = [Line2D([], [], ls="none", marker=m, color=c, label=f"Seed {s}")
+               for s, c, m in ((26, BLUE, "o"), (42, CLAY, "s"))]
+    fig.legend(handles=handles, ncols=2, loc="outside lower center", fontsize=8.5)
     save(fig, "q3_budget")
 
 
