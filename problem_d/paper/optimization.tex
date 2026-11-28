@@ -1,4 +1,4 @@
-\section{Problems 2 and 3. Exact search on a finite score table}
+\section{Model II: QUBO formulation and family reduction}
 \subhead{One representative of each metal site}
 Let $a_i,b_j\in\{0,1\}$ indicate the selected A and B elements. For Q2 let $C_{ij}=\Vh(i,j,\noo)$. For Q3 store
 \begin{equation}
@@ -24,8 +24,8 @@ Kaiwu converts linear fields to couplings with a reference spin, producing 105 I
 \caption{Q3 original-score excess among legal states minimizing each quantized whole-grid energy. A segment spans tied outcomes. Coincident endpoints indicate identical excess. The diamond gives the verified result of the block method.}\label{fig:precision}
 \end{figure}
 
-\section{An eight-bit encoding with a checkable minimum}
-All six whole-grid configurations in Figure~\ref{fig:precision} lose the minimum of the frozen mixture. For the full range and $P=1.1$, the winning legal pair costs an extra 18.5949 units of $\Vh$. A cap and $P=3$ reduce the best tied excess to 1.3175, still above zero. This audit checks only legal states. We now construct smaller blocks whose entire unconstrained state spaces can be checked.
+\section{Model III: Eight-bit solution and exact verification}
+For the mixture only, all six whole-grid configurations in Figure~\ref{fig:precision} lose its original minimum. The direct-regression audit retains its own minimum in four of the six settings; quantization failure is therefore model- and parameter-dependent. For the full range and $P=1.1$, the winning legal pair costs an extra 18.5949 units of $\Vh$. A cap and $P=3$ reduce the best tied excess to 1.3175, still above zero. This audit checks only legal states. We now construct smaller blocks whose entire unconstrained state spaces can be checked.
 
 Sort A and B alphabetically and partition each into thirteen consecutive groups of four. Each of the resulting 169 blocks $T$ covers 16 pairs. Let $M=\max_{ij\in T} C_{ij}$. For nonnegative costs use
 \begin{equation}
@@ -52,8 +52,16 @@ For a block of $n$ rows and $n$ columns with integer costs in $[0,K]$, the refer
 \end{equation}
 The $n-1$ same-register partners each contribute $2P$ and the diagonal contributes $-2P$ inside the reference term. Each of the $n$ cross-register partners contributes at most $K$. With $P=16$, $K=15$, Eq.~\eqref{eq:blockbound} gives bounds of 77, 124 and 171 for sides three, four and five, respectively. Four is the largest uniform side length guaranteed to fit signed eight-bit couplings under this integer scaling. A particular five-element block may fit if its row and column sums are small. The uniform construction eliminates that data-dependent assumption.
 \input{rounding.tex}
-\section{Selected compositions and computational cost}
-Table~\ref{tab:answers} reports the single selections for Q2 and Q3 and the corresponding blind-pool checks.
+\subhead{Whole-grid annealing and its availability}
+We attempted a 105-spin Kaiwu simulated-annealing run with initial temperature 100, cooling factor 0.95, cutoff 0.01, ten iterations per temperature and seed 0. The installed SDK requested a user ID and SDK authorization code before solving. No samples were produced. Consequently, no stochastic success probability, solver time benchmark or SPQC result is reported. The attempted full-range run and exception are retained in \texttt{whole\_grid\_annealing.csv}; the proposed 10\% and 1\% caps remain unexecuted configurations. The exact block method is the available verified solver comparison.
+
+\section{Task-specific selections and computational cost}
+Our final answers use the permitted blind pools: Q2 selects $\mathrm{SrTaO_2N}$ (ID 2269) with the property-first score 0.969357; Q3 selects $\mathrm{LaTiO_2N}$ (ID 13153) with the mixture score 6.924382. The Q2 model is selected for its better rank-one validation outcomes under both seeds. The Q3 mixture is retained for its stronger near-target retrieval and avoidance of the property model's repeated extreme-gap error. Neither score proves physical feasibility.
+
+\subhead{Explicit membership in blind-pool QUBOs}
+The 52-by-52 grid contains pairs outside the blind pools. For each nonempty four-by-four block, scale eligible raw costs to $[0,14]$ and set excluded cells to 15, then apply Eq.~\eqref{eq:bins} with $P=16$. Every block has an eligible cell costing at most 14, so excluded cells cannot be ground states. Empty blocks are skipped. Original-score tie resolution preserves the eligible minimum. The implemented \texttt{blind\_solve.py} runs Kaiwu's exact CPU backend and compares the result with direct enumeration; its new ledger is \texttt{blind\_block\_runs.csv}. Each task uses 159 nonempty blocks and skips ten empty blocks; total end-to-end block times on the review host are 0.356 s for Q2 and 0.380 s for Q3. These new measurements are separate from the historical full-pool timings below.
+
+Table~\ref{tab:answers} retains the original frozen-mixture benchmarks for comparison; they are not the task-specific final answers.
 \begin{table}[htbp]
 \caption{Answers and membership checks. The two full pools are solved by Kaiwu. Direct scans of the two blind subsets give the restricted-pool comparison.}\label{tab:answers}
 \centering\small\begin{tabular}{llrllrr}
@@ -64,7 +72,7 @@ Q2 & 11 (529)&13153& La, Ti, NO2 & LaTiO$_2$N & 6.924382 & hidden\\
 Q3 & 12 (1,587)&13153& La, Ti, NO2 & LaTiO$_2$N & 6.924382 & hidden\\\bottomrule
 \end{tabular}
 \end{table}
-All four winners use the same refitted model. The ordered triplets explain why the file's NO2 family is written as O$_2$N in the supplied formula. For Q2 and Q3, respectively, runner-up scores are 7.256664 and 3.904881. Enumeration gaps for the chosen records are zero. Their winning-block Ising energies under $-s^\mathsf{T}Js$ are $-702$ and $-724$. Constants and scales vary by block, so comparing those two energies would have no physical meaning. $\mathrm{SnTiO_3}$ belongs to file 02; its public value is an in-training observation after refitting. For a new DFT calculation in the blind pool, both objectives nominate $\mathrm{LaTiO_2N}$. The appendix subsection on family choices compares its three anion compositions.
+All four winners use the same refitted model. The ordered triplets explain why the file's NO2 family is written as O$_2$N in the supplied formula. For Q2 and Q3, respectively, runner-up scores are 7.256664 and 3.904881. Enumeration gaps for the chosen records are zero. Their winning-block Ising energies under $-s^\mathsf{T}Js$ are $-702$ and $-724$. Constants and scales vary by block, so comparing those two energies would have no physical meaning. $\mathrm{SnTiO_3}$ belongs to file 02; its public value is an in-training observation after refitting. Under this historical mixture-only comparison, both blind objectives nominate $\mathrm{LaTiO_2N}$. The appendix subsection on family choices compares its three anion compositions.
 
 \subhead{Does the blind Q2 choice survive a change of predictor?}
 We refit the four 220-tree property regressors on the same 15,225 labeled records (02 and 03), at seed 26. For each of the 529 file-11 compositions we apply Eq.~\eqref{eq:loss} to its predicted properties. We rank both this score and the frozen mixture score in ascending order, breaking ties by official ID. Table~\ref{tab:crossrank} follows each model's winner into the other ranking.
@@ -79,7 +87,7 @@ $\mathrm{LaTiO_2N}$ & 13153 & 6.924382 & 1 & 2.122043 & 6\\
 $\mathrm{SrTaO_2N}$ & 2269 & 9.159399 & 4 & 0.969357 & 1\\\bottomrule
 \end{tabular}
 \end{table}
-Both compositions appear in both top sixes, but the preferred first calculation changes. The property-first fit predicts a gap of 1.168 eV for $\mathrm{SrTaO_2N}$ and 0.866 eV for $\mathrm{LaTiO_2N}$, both below the 1.40 eV threshold. Thus even its winning score of 0.969357 represents a predicted violation. The competition answer uses the frozen mixture to keep the two optimization tasks on one declared objective. The available Q2 validation evidence favors the property-first model for the first-choice decision, so the mixture recommendation is not established as the best physical selection strategy. These blind ranks expose that decision sensitivity without resolving it using unavailable labels.
+Both compositions appear in both top sixes, but the preferred first calculation changes. The property-first fit predicts a gap of 1.168 eV for $\mathrm{SrTaO_2N}$ and 0.866 eV for $\mathrm{LaTiO_2N}$, both below the 1.40 eV threshold. Thus even its winning score of 0.969357 represents a predicted violation. The revised Q2 answer uses the property-first winner, while the mixture nominee remains a sensitivity comparison. Hidden labels are unavailable to adjudicate their physical performance.
 
 \input{decode.tex}
 
@@ -108,7 +116,7 @@ The direct scan uses the same in-memory predictions and times 1,001 repetitions 
 
 \input{margins.tex}
 
-\section{Interpretation and limits}
+\section{Model strengths, limitations and conclusions}
 Two kinds of error matter to a one-composition decision. For any returned candidate $u$ and a true minimizer $u^*$ in the same pool, adding and subtracting predicted scores yields
 \begin{equation}
  V(u)-V(u^*)\ \leq\
@@ -118,12 +126,20 @@ Two kinds of error matter to a one-composition decision. For any returned candid
 \end{equation}
 In Eq.~\eqref{eq:regret}, both extrema range over the specified pool. The optimization gap is zero in the two full pools. Mean validation error cannot bound the maximum score error at an unseen composition. On Q3 validation, exact minimization of the seed-26 surrogate still incurs physical regret of 11.45225.
 
-File 03 contains no exact targets and was used for model selection. Its near-target retrieval counts and the auxiliary grouped checks therefore cannot estimate hidden zero-target recall without additional assumptions about that distribution shift. The metallic bound transfers only to data with the same band-edge convention. Across the five unseen-pair folds, the mixture finds 23 of 50 three-family near-targets at 50 checks per fold, compared with 14 for direct regression. Its median single-choice regret is larger (13.521 versus 11.569). These results favor the mixture for a shortlist and leave uncertainty about its first choice.
+File 03 contains no exact targets and was used for model selection. Its near-target retrieval counts and the auxiliary grouped checks therefore cannot estimate hidden zero-target recall without additional assumptions about that distribution shift. The property-first score and the mixture need not estimate the same quantity. Write $F(e,g,v,c)$ for the convex squared-hinge loss in Eq.~\eqref{eq:loss}, and let $Y$ denote the four physical properties. Even with exact conditional means, Jensen's inequality gives
+\[
+ F\big(\mathbb E[Y\mid z]\big)\leq\mathbb E[F(Y)\mid z].
+\]
+Thus applying the penalties after averaging properties can understate expected violation. This inequality concerns exact conditional means, not arbitrary fitted regressors, and does not identify which fitted ranking is correct. In particular, the smaller blind property-first score cannot by itself establish a better material.
 
-The eight-bit construction preserves the score minimum when each block returns all ground states and their raw costs break ties. All candidates must first be scored, and a direct scan already finds the same minimum in microseconds. Any SPQC speed comparison still requires device success rates and end-to-end timings on matched inputs \cite{speed}.
+
+\subhead{Strengths and remaining limitations}
+The metallic bound transfers only to data with the same band-edge convention. Across the five unseen-pair folds, the mixture finds 23 of 50 three-family near-targets at 50 checks per fold, compared with 14 for direct regression. Its median single-choice regret is larger (13.521 versus 11.569). These results favor the mixture for a shortlist and leave uncertainty about its first choice.
+
+The eight-bit construction preserves the score minimum when each block returns all ground states and their raw costs break ties. All candidates must first be scored, and a direct scan already finds the same minimum in microseconds. The method offers transparent membership constraints, bounded coefficients and independently checkable score recovery. Its cost is full-table evaluation and classical postprocessing. Any SPQC speed comparison still requires device success rates and end-to-end timings on matched inputs \cite{speed}.
 
 \textbf{Q1.} The mixture scores all 3,703 hidden IDs. The predictions are in \texttt{q1\_holdout.csv}. Two-seed validation supports shortlist use, while single-choice regret limits confidence in the first-ranked material.
 
-\textbf{Q2.} The fixed-family full and blind pools both select $\mathrm{LaTiO_2N}$ (ID 13153, $\Vh=6.924382$) under the mixture. The property-first refit selects $\mathrm{SrTaO_2N}$ (ID 2269) on the blind pool. Independent DFT calculations are needed to resolve this choice.
+\textbf{Q2.} The final blind-pool answer is $\mathrm{SrTaO_2N}$ (ID 2269), selected with the property-first model. For comparison, the mixture full and blind pools both select $\mathrm{LaTiO_2N}$ (ID 13153, $\Vh=6.924382$) under the mixture. The property-first refit selects $\mathrm{SrTaO_2N}$ (ID 2269) on the blind pool. Independent DFT calculations are needed to resolve this choice.
 
-\textbf{Q3.} The three-family full pool selects $\mathrm{SnTiO_3}$ ($\Vh=3.268113$, public in-training $V=0.001419$). The blind pool selects $\mathrm{LaTiO_2N}$ ($\Vh=6.924382$), whose physical violation remains unknown.
+\textbf{Q3.} The final blind-pool answer is $\mathrm{LaTiO_2N}$ (ID 13153). The historical three-family full-pool benchmark selects $\mathrm{SnTiO_3}$ ($\Vh=3.268113$, public in-training $V=0.001419$). The blind pool selects $\mathrm{LaTiO_2N}$ ($\Vh=6.924382$), whose physical violation remains unknown.

@@ -31,11 +31,13 @@ Perovskite screening for water splitting requires suitable formation energy, ban
 
 \textbf{Q1.} A band-gap classifier and two conditional regressors predict the violation for all 3,703 hidden compositions. On 3,969 labeled validation compositions, the mixture retrieves 13 of 27 near-targets ($V<1$) in the first 50 checks, versus six for direct regression. A second seed gives 15 versus ten.
 
-\textbf{Q2.} We refit on all public labels and apply blockwise 8-bit quadratic unconstrained binary optimization (QUBO) to the fixed-family pool. The minimum is $\mathrm{LaTiO_2N}$ ($\Vh=6.924382$), whose physical violation remains unknown. A four-property refit instead chooses $\mathrm{SrTaO_2N}$ on the blind subset.
+\textbf{Q2.} We refit on all public labels and apply blockwise 8-bit quadratic unconstrained binary optimization (QUBO) to the fixed-family pool. Using the property-first predictor selected for Q2 rank-one performance, the blind-pool answer is $\mathrm{SrTaO_2N}$ (ID 2269, predicted loss 0.969357). The mixture nominates $\mathrm{LaTiO_2N}$ as a sensitivity comparison.
 
-\textbf{Q3.} We minimize over the three families for each ordered pair before applying the same search. The full-pool winner is $\mathrm{SnTiO_3}$ ($\Vh=3.268113$, public in-training $V=0.001419$). The blind pool selects $\mathrm{LaTiO_2N}$.
+\textbf{Q3.} We minimize over the three families for each ordered pair before applying the same search. The full-pool benchmark winner is $\mathrm{SnTiO_3}$ ($\Vh=3.268113$, public in-training $V=0.001419$). The final blind-pool answer is $\mathrm{LaTiO_2N}$ (ID 13153, score 6.924382).
 
-The Kaiwu local CPU backend solves 338 blocks; exhaustive state checks verify the minima of both frozen score tables. All pool scores are computed in advance, so this establishes encoding correctness without a hardware speedup claim. On Q3 validation at seed 26, the mixture retrieves five of eleven near-targets in 50 checks, while its first choice has regret 11.45225. The shortlist and first-choice results therefore support different levels of confidence.
+The method chain combines a probability gate and conditional regressors, a two-site score table obtained by minimizing over the three anion families, and an eight-bit one-hot QUBO. Task-specific prediction and explicit blind-pool membership focus the final selections on previously unmeasured compositions.
+
+The Kaiwu local CPU backend solves the 338 historical full-pool blocks and additional membership-constrained blind blocks; exhaustive state checks verify the minima of both frozen score tables. All pool scores are computed in advance, so this establishes encoding correctness without a hardware speedup claim. On Q3 validation at seed 26, the mixture retrieves five of eleven near-targets in 50 checks, while its first choice exceeds the best observed violation by 11.45225. The shortlist and first-choice results therefore support different levels of confidence.
 \keywords{perovskite screening, grouped validation, band-gap mixture, QUBO, coefficient precision}
 \end{abstract}
 \clearpage
