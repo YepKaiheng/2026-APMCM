@@ -13,7 +13,7 @@ LEVELS = 15
 PENALTY = 16
 
 
-def exact_block(cost, optimizer):
+def exact_block(cost, optimizer, ids=None):
     start = perf_counter()
     cap = cost.max()
     bins = np.rint(LEVELS * cost / cap).astype(int) if cap > 0 else np.zeros_like(cost, int)
@@ -42,7 +42,7 @@ def exact_block(cost, optimizer):
     np.testing.assert_array_equal(h - h[0], 8 * (e - e[0]))
     assert h.min() == energies[0] and (h == h.min()).sum() == len(locations)
     assert locations == set(zip(*np.where(bins == bins.min())))
-    i, j = min(locations, key=lambda ij: (cost[ij], ij))
+    i, j = min(locations, key=lambda ij: (cost[ij], int(ids[ij]) if ids is not None else ij))
     assert cost[i, j] == cost.min()
     end = perf_counter()
     return dict(i=int(i), j=int(j), ties=len(locations), bin_min=int(bins.min()),
@@ -70,14 +70,15 @@ def run():
         records = []
         for a in range(0, 52, SIZE):
             for b in range(0, 52, SIZE):
-                result = exact_block(cost[a:a+SIZE, b:b+SIZE], optimizer)
+                result = exact_block(cost[a:a+SIZE, b:b+SIZE], optimizer,
+                                     ids[a:a+SIZE, b:b+SIZE])
                 winner = ids[a + result.pop("i"), b + result.pop("j")]
                 result.update(problem=problem, block_a=a//SIZE, block_b=b//SIZE, id=winner)
                 records.append(result)
         t1 = perf_counter()
         chosen = min(records, key=lambda r: (r["score"], r["id"]))
         full_values = pool.V_hat.to_numpy()
-        idx = full_values.argmin()
+        idx = np.lexsort((pool.id.to_numpy(), full_values))[0]
         assert chosen["id"] == pool.id.iloc[idx] and chosen["score"] == full_values[idx]
         verify = perf_counter() - t1
         times = []

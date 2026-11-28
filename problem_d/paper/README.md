@@ -1,6 +1,6 @@
-# Problem D manuscript and reproducible experiments
+# Reproduction materials for Problem D
 
-[D_review.pdf](D_review.pdf) is the English manuscript. The review copy leaves the team number for its registered authors to complete. The summary, contents, main text, references and full program listings are in the PDF. The two full candidate pools were solved with the local Kaiwu CPU exact optimizer. There was no SPQC device experiment.
+Team apmcm26308551. The manuscript uses the official APMCM class.
 
 | File | Contents |
 |---|---|
@@ -66,10 +66,31 @@ With TeX Live and the APMCM template dependencies installed, run from this direc
 
 ```powershell
 $env:TEXINPUTS = '.;../../sources/latex;' + $env:TEXINPUTS + ';'
-xelatex -halt-on-error -interaction=nonstopmode -jobname=D_review main.tex
-xelatex -halt-on-error -interaction=nonstopmode -jobname=D_review main.tex
-xelatex -halt-on-error -interaction=nonstopmode -jobname=D_review main.tex
+xelatex -halt-on-error -interaction=nonstopmode -jobname=Dapmcm26308551 main.tex
+xelatex -halt-on-error -interaction=nonstopmode -jobname=Dapmcm26308551 main.tex
+xelatex -halt-on-error -interaction=nonstopmode -jobname=Dapmcm26308551 main.tex
 ```
 
-To insert the real registration number, set `\baominghao{}` in the entry file, rebuild and use the organizer's team-specific file name. The signed control sheet is a separate team document.
+## Review revision (2026-11-28)
 
+The uploaded submission is the baseline of branch `review/manuscript-audit-20261128`.
+The review preserves the frozen Q1 and Q2/Q3 score tables and the 338 historical
+Kaiwu calls. It does not claim a new model fit or a new SDK run.
+
+Run the independent archive audit from the repository root:
+
+```powershell
+python problem_d/paper/review_audit.py
+```
+
+Only NumPy and pandas are needed for this audit. It verifies both score-table
+SHA-256 values, all 86,528 binary assignments in 338 blocks, their scaled Ising
+energies, archived block selections, blind pool membership and cross-rankings.
+With the official CSV files present it also checks pair disjointness and the
+loss reconstruction. Its machine-readable output is
+`artifacts/review_audit.json`. The numerical and methodological review is in
+`docs/10_manuscript_audit_20261128.md`.
+
+`solve.py` now applies the declared official-ID tie rule within blocks and at
+the full-pool verification step. This affects only exact original-score ties;
+the archived final selections and reported scores are unchanged.
