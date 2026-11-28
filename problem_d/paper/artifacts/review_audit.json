@@ -1,0 +1,138 @@
+{
+  "scope": "archived predictions and independent binary enumeration",
+  "sdk_rerun": false,
+  "model_retraining": false,
+  "score_hashes_verified": 2,
+  "q1_predictions": 3703,
+  "q23_predictions": 8112,
+  "validation": [
+    {
+      "seed": 26,
+      "model": "direct",
+      "pool": "all",
+      "hits50": 6,
+      "first_id": 11867,
+      "first_V": 11.402902,
+      "regret": 11.383301999999999
+    },
+    {
+      "seed": 26,
+      "model": "direct",
+      "pool": "Q2",
+      "hits50": 3,
+      "first_id": 2205,
+      "first_V": 8.562022,
+      "regret": 8.353622000000001
+    },
+    {
+      "seed": 26,
+      "model": "direct",
+      "pool": "Q3",
+      "hits50": 1,
+      "first_id": 16911,
+      "first_V": 11.49225,
+      "regret": 11.452250000000001
+    },
+    {
+      "seed": 26,
+      "model": "mixture",
+      "pool": "all",
+      "hits50": 13,
+      "first_id": 14301,
+      "first_V": 0.477253,
+      "regret": 0.457653
+    },
+    {
+      "seed": 26,
+      "model": "mixture",
+      "pool": "Q2",
+      "hits50": 4,
+      "first_id": 5542,
+      "first_V": 10.92711,
+      "regret": 10.718710000000002
+    },
+    {
+      "seed": 26,
+      "model": "mixture",
+      "pool": "Q3",
+      "hits50": 5,
+      "first_id": 16911,
+      "first_V": 11.49225,
+      "regret": 11.452250000000001
+    },
+    {
+      "seed": 42,
+      "model": "direct",
+      "pool": "all",
+      "hits50": 10,
+      "first_id": 1767,
+      "first_V": 12.091551,
+      "regret": 12.071951
+    },
+    {
+      "seed": 42,
+      "model": "direct",
+      "pool": "Q2",
+      "hits50": 3,
+      "first_id": 18347,
+      "first_V": 11.540465,
+      "regret": 11.332065
+    },
+    {
+      "seed": 42,
+      "model": "direct",
+      "pool": "Q3",
+      "hits50": 3,
+      "first_id": 8811,
+      "first_V": 46.24,
+      "regret": 46.2
+    },
+    {
+      "seed": 42,
+      "model": "mixture",
+      "pool": "all",
+      "hits50": 15,
+      "first_id": 14882,
+      "first_V": 0.0196,
+      "regret": 0.0
+    },
+    {
+      "seed": 42,
+      "model": "mixture",
+      "pool": "Q2",
+      "hits50": 4,
+      "first_id": 7702,
+      "first_V": 11.08362,
+      "regret": 10.87522
+    },
+    {
+      "seed": 42,
+      "model": "mixture",
+      "pool": "Q3",
+      "hits50": 6,
+      "first_id": 14612,
+      "first_V": 12.669539,
+      "regret": 12.629539000000001
+    }
+  ],
+  "blocks": [
+    {
+      "task": "Q2",
+      "blocks": 169,
+      "states": 43264,
+      "winner_id": 13153,
+      "score": 6.92438215767335
+    },
+    {
+      "task": "Q3",
+      "blocks": 169,
+      "states": 43264,
+      "winner_id": 8760,
+      "score": 3.26811293746613
+    }
+  ],
+  "gate_replay_rows": 3969,
+  "original_data_available": true,
+  "max_loss_rounding_difference": 1.0189444012098647e-05,
+  "status": "PASS"
+}
