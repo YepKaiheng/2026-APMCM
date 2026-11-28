@@ -2,16 +2,17 @@
 \section*{Appendix. Reproduction and complete source listings}
 \phantomsection
 \addcontentsline{toc}{section}{Appendix. Reproduction and complete source listings}
-Python 3.12.14, CatBoost 1.2.10, pymatgen 2025.10.7, NumPy 2.5.5, pandas 2.2.3, SciPy 1.18.1, scikit-learn 1.9.1 and Kaiwu SDK 1.4.4 were used on Windows 11. Figures use the ideal cubic prototype, public physical properties, saved predictions and solver tables. We used the archived numerical environment (including Matplotlib 3.10.3) for experiments. The final vector figures use the separate Matplotlib 3.10.8 rendering setup documented in the companion README. The paper was typeset with XeLaTeX and the APMCM class.
+Python 3.12.14, CatBoost 1.2.10, pymatgen 2025.10.7, NumPy 2.5.5, pandas 2.2.3, SciPy 1.18.1, scikit-learn 1.9.1 and Kaiwu SDK 1.4.4 were used on Windows 11. Figures use the ideal cubic prototype, public physical properties, saved predictions and solver tables. We used the archived numerical environment (including Matplotlib 3.10.3) for experiments. The final vector figures use the separate Matplotlib 3.10.8 rendering setup documented in the companion README. The original experiments used that archived Windows environment. This review revision was compiled with XeLaTeX and the supplied APMCM class; the archived predictors were not retrained and the Kaiwu calls were not rerun. An independent NumPy/pandas audit checks the stored scores and all binary block states.
 
 Place the original files in \texttt{problem\_d/date}. Run the data audit, the validation and stress comparisons for seeds 26 and 42, the physical-property comparison, the seed-26 encoding and precision audit, then the paper scripts. Running \texttt{screen.py scores} produces the hidden Q1 predictions and the refit Q2/Q3 score table. Running \texttt{screen.py development} produces the five-fold results. Use \texttt{solve.py} for both full-pool searches, \texttt{gate\_audit.py} for the gate replay, \texttt{capacity\_audit.py} for the direct-model controls, \texttt{q2\_blind\_comparison.py} for the seed-26 blind cross-ranking, and \texttt{mechanisms.py} for the consistency and margin checks. Run \texttt{figures.py}, \texttt{material\_figures.py}, \texttt{perovskite\_plates.py}, \texttt{crystal\_scenes.py} and \texttt{tables.py} for the manuscript. The companion README gives the arguments and file names for each call.
 
-The score ledger records SHA-256 digests for the two exported tables. The block ledger contains the selected ID, tie count, integer-energy minimum, scaled Ising energy, observed coupling range and timing for each call. Both final-pool selections can be reconstructed from the tables alone.
+The score ledger records SHA-256 digests for the two exported tables. The block ledger contains the selected ID, tie count, integer-energy minimum, scaled Ising energy, observed coupling range and timing for each call. Both final-pool selections can be reconstructed from the tables alone. The additional \texttt{review\_audit.py} checks both SHA-256 digests, validation rankings, blind membership, all 86,528 binary assignments across 338 blocks, integer couplings and the archived energies. It uses NumPy and pandas without importing Kaiwu or CatBoost. With the original CSVs present it also checks pair disjointness and reconstructs the public penalties. Its scope is verification of archived outputs, rather than reproduction of model fitting or SDK execution.
 
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{A\arabic{figure}}
 \renewcommand{\theHfigure}{supp.\arabic{figure}}
 \subhead{Screening curves by candidate pool}
+Figure~\ref{fig:allbudgets} shows how the cumulative retrieval count changes with the screening budget for both seeds and all three evaluation pools.
 \begin{figure}[htbp]
 \centering\includegraphics[width=\linewidth]{figures/screening.pdf}
 \caption{Cumulative $V<1$ hits on file 03. Circles indicate the mixture, squares direct regression, solid lines seed 26 and dashed lines seed 42. The dotted line gives the expected cumulative count under random selection.}\label{fig:allbudgets}
@@ -40,3 +41,4 @@ The score ledger records SHA-256 digests for the two exported tables. The block 
 \program{A14. Weighted gate and QUBO readout}{crystal_scenes.py}
 \program{A15. Direct-regression capacity controls}{capacity_audit.py}
 \program{A16. Blind Q2 cross-ranking}{q2_blind_comparison.py}
+\program{A17. Independent archived-result audit}{review_audit.py}

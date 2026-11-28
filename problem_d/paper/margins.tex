@@ -5,16 +5,26 @@ Checking the original score after decoding certifies the winner for a frozen tab
  \quad\Longleftrightarrow\quad \epsilon<(s_2-s_1)/2 .
  \label{eq:margin}
 \end{equation}
-The condition is sharp under independent bounded perturbations. Opposite changes at the two leading entries can create a tie at equality. If changes are correlated by composition, this worst case may be unattainable. Table~\ref{tab:margins} applies Eq.~\eqref{eq:margin} to each frozen pool. The resulting radii bound changes in predicted scores.
+The condition is sharp under independent bounded perturbations. Opposite changes at the two leading entries can create a tie at equality. If changes are correlated by composition, this worst case may be unattainable. Table~\ref{tab:margins} applies Eq.~\eqref{eq:margin} to each frozen pool. To check the threshold on the frozen scores, add $\epsilon$ to the winner, subtract $\epsilon$ from its runner-up, keep all other scores fixed and minimize again. Table~\ref{tab:perturbation} reports the controlled comparison at three levels relative to the unrounded half-margin $h=(s_2-s_1)/2$. This comparison changes only the two scores; it does not refit the predictor.
 
 \begin{table}[htbp]
 \caption{Selection margins in the archived Q2/Q3 refit. The last column counts records, including the winner, with predicted score at most two units above the minimum.}\label{tab:margins}
 \centering\small\begin{tabular}{llrrr}
-\toprule Pool & Runner-up & $s_2-s_1$ & Half-margin & Within 2 units\\\midrule
+\toprule Pool & Runner-up & \multicolumn{1}{c}{$s_2-s_1$} & \multicolumn{1}{c}{Half-margin} & Within 2 units\\\midrule
 Q2 full (07) & $\mathrm{YTiO_2N}$ & 0.332282 & 0.166141 & 5\\
 Q2 blind (11) & $\mathrm{YTiO_2N}$ & 0.332282 & 0.166141 & 2\\
 Q3 full (08) & $\mathrm{GeTiO_3}$ & 0.636768 & 0.318384 & 5\\
 Q3 blind (12) & $\mathrm{YTiO_2N}$ & 0.332282 & 0.166141 & 9\\\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Controlled change to the two leading scores in each of the four pools. The signed gap is the perturbed runner-up score minus the perturbed original winner score.}\label{tab:perturbation}
+\centering\small\begin{tabular}{ccl}
+\toprule Perturbation & Signed gap & Minimum after perturbation\\\midrule
+$0.9h$ & $+0.2h$ & Original winner\\
+$1.0h$ & $0$ & Original winner and runner-up tie\\
+$1.1h$ & $-0.2h$ & Original runner-up\\\bottomrule
 \end{tabular}
 \end{table}
 
