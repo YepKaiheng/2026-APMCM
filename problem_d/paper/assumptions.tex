@@ -1,0 +1,14 @@
+\subsection{Model assumptions and notation}
+\begin{enumerate}
+\item Candidate compositions follow the supplied cubic prototype. A and B are ordered sites; equal elements are allowed.
+\item Inference uses composition and deterministic element descriptors only. Measured physical properties are training labels, not hidden-set inputs.
+\item The empirical zero-gap convention $v=c$ is retained for the metallic lower bound.
+\item Public validation near-targets provide a development proxy; their distribution need not match hidden exact targets.
+\end{enumerate}
+\begin{table}[htbp]\centering\small\caption{Principal notation.}\begin{tabular}{ll}\toprule Symbol & Meaning\\\midrule
+$A,B,X$ & Ordered metal sites and anion family\\
+$e,g,v,c$ & Formation energy, gap and two band edges (eV)\\
+$V,\widehat V$ & Observed loss and uncalibrated predicted score\\
+$p,L$ & Positive-gap probability and metallic loss bound\\
+$C,q,P$ & Raw cost table, integer costs and constraint penalty\\
+$H_k,R_1$ & Near-target hits in $k$ checks and rank-one excess loss\\\bottomrule\end{tabular}\end{table}

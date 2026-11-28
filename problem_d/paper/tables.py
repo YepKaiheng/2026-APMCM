@@ -27,13 +27,13 @@ def make():
     for task, suffix in [("q1_holdout", "One"), ("q23_full", "Full")]:
         r = timings.loc[task]
         for field, label in [("feature_s","Desc"),("fit_s","Fit"),("predict_s","Score")]:
-            macro(label + suffix, f"{r[field]:.4f}")
+            macro(label + suffix, f"{r[field]:.2f}" if label == "Scan" else f"{r[field]:.4f}")
     for task, suffix in [("Q2","Two"),("Q3","Three")]:
         r = costs.loc[task]
         for field, label in [("setup_s","Pool"),("prepare_s","Encode"),
                              ("solve_s","Solve"),("decode_check_s","Check"),
                              ("enum_median_us","Scan")]:
-            macro(label + suffix, f"{r[field]:.4f}")
+            macro(label + suffix, f"{r[field]:.2f}" if label == "Scan" else f"{r[field]:.4f}")
         for field, label in [("tied_blocks","Tied"),("finalists","Finalists"),
                              ("j_min","CoeffLow"),("j_max","CoeffHigh")]:
             macro(label + suffix, int(r[field]))

@@ -1,0 +1,13 @@
+seed,task,model,first_id,first_V,hits50
+26,Q2,mixture,5542,10.92711,4
+26,Q2,physical4,18479,0.36,3
+26,Q2,rank_ensemble,5542,10.92711,3
+26,Q3,mixture,16911,11.49225,5
+26,Q3,physical4,8811,46.24,4
+26,Q3,rank_ensemble,2007,3.24,4
+42,Q2,mixture,7702,11.08362,4
+42,Q2,physical4,18479,0.36,3
+42,Q2,rank_ensemble,3251,11.980655,3
+42,Q3,mixture,14612,12.669539,6
+42,Q3,physical4,8811,46.24,4
+42,Q3,rank_ensemble,17077,21.16,6
